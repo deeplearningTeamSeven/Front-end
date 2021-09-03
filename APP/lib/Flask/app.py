@@ -9,7 +9,7 @@ response = ''
 app = Flask(__name__)
 
 #route to entertain our post and get request from flutter app
-@app.route('/user', methods = ['POST'])
+@app.route('/login', methods = ['POST'])
 def UserInfoRoute():
 
     #fetching the global response variable to manipulate inside the function
@@ -19,9 +19,9 @@ def UserInfoRoute():
         request_data = request.data #getting the response data
         #request_data = json.loads(request_data.decode('utf-8')) #converting it from json to key value pair
         request_data = json.loads(request_data.decode('utf-8'))
-        name = request_data['userName'] #assigning it to name
-        #email = request_data['email']
-        response = f'Hi {name}! this is flask' #re-assigning response with the name we got from the user
+        name = request_data['user_name'] #assigning it to name
+        email = request_data['email']
+        response = f'Hi {name}! Your email is {email}' #re-assigning response with the name we got from the user
         print(response)
         return " " #to avoid a type error
     except JSONDecodeError:

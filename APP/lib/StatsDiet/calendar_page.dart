@@ -160,7 +160,7 @@ void showAlertDialog(BuildContext context) async {
         showActionButtons: true,
         controller: _datePickerController,
         //onViewChanged: viewChanged,
-        onSubmit: (Object value) {     //ok 누르면서 날짜 범위 최종 선택
+        onSubmit: (Object value) {     //ok 누르면서 날짜 범위 최종 선택, 다시 #10 호출(여기서 받은 시작, 끝 날짜 보내줌)
           print(value);
           
          change2GraphPage();    //ok 버튼 누르면 식단통계 페이지로 복귀

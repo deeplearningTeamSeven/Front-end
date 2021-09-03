@@ -1,3 +1,6 @@
+import 'package:ai_project/Class4Flask/dietGraphDto.dart';
+import 'package:ai_project/Class4Flask/dietListDto.dart';
+import 'package:ai_project/Login/kakao_login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +10,8 @@ import 'CheckDiet/check_diet.dart';
 import 'StatsDiet/diet_graph.dart';
 import 'RecommendDiet/diet_recommend.dart';
 import 'MemberInfo/input_info.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // 조회, 추천, 통계 페이지 전환을 위한 UI
 class SubMain extends StatefulWidget {
@@ -64,10 +69,28 @@ class _SubMain extends State<SubMain> with TickerProviderStateMixin {
         tabSelectedColor: Colors.blue[900],
         tabIconSelectedColor: Colors.white,
         tabBarColor: Colors.grey[300],
-        onTabItemSelected: (int value) {
-          setState(() {
-            _tabController!.index = value;
+        onTabItemSelected: (int value) {     //추천 눌렀을 때 #11 호출,   식단통계 누르면 (시작 날짜: 현재 날짜, 끝날짜 : 현재 날짜로 해서 #10 호출),
+        if(value==0){
+          setState(() {                       
+            _tabController!.index = value;    //누른 페이지로 이동
           });
+
+        }
+          else if(value==1){
+            receive4DietRecommend();   // #11
+            setState(() {                       
+            _tabController!.index = value;    //누른 페이지로 이동
+          });
+          }else if(value==2){  //  #10
+            //send4DietGraph();
+            ///////// #10 호출하고 받은 데이터 변수에 저장해야함. 그리고 통계 페이지에서 활용해야함
+            setState(() {                       
+            _tabController!.index = value;    //누른 페이지로 이동
+          });
+
+          }
+          
+          
         },
       ),
       body: TabBarView(
@@ -84,4 +107,34 @@ class _SubMain extends State<SubMain> with TickerProviderStateMixin {
       ),
     );
   }
+
+  receive4DietRecommend() async{   //#11
+    
+    final url = 'http://3.38.106.149/diet/recommend?user_id=i';
+    print(Uri.parse(url));
+
+    print(url);
+    //sending a post request to the url
+
+    final response = await http.get(Uri.parse(url));
+          
+  }
+
+ /* send4DietGraph() async{   //#10
+    DietGraphDto dietGraph = new DietGraphDto(KakaoLoginState.user_id, afdaf, asdfsf);  //시작날짜, 끝날짜 불러와서 넣어야함
+    var DietGraphJson =  dietGraph.toJson();
+    print(DietGraphJson);
+
+    final url = 'http://3.38.106.149/diets/graph';
+    print(Uri.parse(url));
+
+    print(url);
+    //sending a post request to the url
+
+    final response = await http.post(Uri.parse(url), body: json.encode(DietGraphJson), headers: {'Content-Type':'application/json'});   
+    print('hello');
+    print(response.body); 
+  }  */
+
+
 }

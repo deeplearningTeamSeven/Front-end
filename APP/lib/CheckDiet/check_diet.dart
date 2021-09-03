@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:ai_project/CheckDiet/add_diet.dart';
 import 'package:ai_project/CheckDiet/edit_diet2.dart';
 import 'package:ai_project/CheckDiet/image_load_button.dart';
+import 'package:ai_project/Class4Flask/dietListDto.dart';
+import 'package:ai_project/Login/kakao_login.dart';
 import 'package:ai_project/MemberInfo/management.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'menu_button_ui.dart';
+import 'package:http/http.dart' as http;
 
 // 조회 페이지 UI
 class CheckDiet extends StatefulWidget {
@@ -110,7 +115,16 @@ class CheckDietState extends State<CheckDiet>
                               fontFamily: 'NanumSquareRound',
                               fontWeight: FontWeight.w700),
                         ),
-                        onPressed: () {},
+                        onPressed: () {  //정보들 입력하고 조회버튼 누르면, #7 호출 후 다시 업데이트된 메인 화면으로
+                          //sendMainPage();
+
+                          Navigator.pushAndRemoveUntil(context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => CheckDiet()    //업데이트 된 정보들을 가지고 다시 메인화면으로
+                            
+                            ), (route) => false);
+
+                        },               
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
@@ -134,7 +148,7 @@ class CheckDietState extends State<CheckDiet>
                 child: Column(
                     children: [
                       
-                      Container(                  //앨범에서 가져온 사진 띄워지는 곳, 사진 누르면 식단 수정 페이지로 이동하게 해보자@@@@@@
+                      Container(                  //앨범에서 가져온 사진 띄워지는 곳, 
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 1.5),
                             //borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -151,8 +165,10 @@ class CheckDietState extends State<CheckDiet>
                                    '   디폴트날짜       아침      칼로리: 1000kcal'
                                   ),
                                   IconButton(
-                                    onPressed: () {
-                                      print("delete diet");                       
+                                    onPressed: () {          //삭제 버튼 누르면 #9번 호출, userid랑 dietid를 준다
+                                      print("delete diet");  
+                                      send4DeleteDiet();      
+                                      /////// 식단 정보가 지워지면 화면에도 없어지도록 해야함               
                                     },
                                   icon: Icon(Icons.remove_circle, color: Colors.red),
                                   iconSize: 20.0,
@@ -162,8 +178,10 @@ class CheckDietState extends State<CheckDiet>
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
-                                  onTap: (){
-                                    change2EditDiet2();
+                                  onTap: (){     //메인 페이지에서 사진을 누르면 #8호출, editdiet2페이지로 이동
+                                    send4EditDiet2();   // #8 호출
+
+                                    change2EditDiet2();                
                                   },
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(15),
@@ -183,7 +201,7 @@ class CheckDietState extends State<CheckDiet>
                     
                   
                 
-                      Container(                  //앨범에서 가져온 사진 띄워지는 곳, 사진 누르면 식단 수정 페이지로 이동하게 해보자@@@@@@
+                      Container(                  //앨범에서 가져온 사진 띄워지는 곳, 
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 1.5),
                             //borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -195,7 +213,7 @@ class CheckDietState extends State<CheckDiet>
                           child: Column(
                             children: [
                               Row(
-                                children: [
+                                children: [     //이미지와 함께 저장돼 있는 날짜, 칼로리 정보 띄워지게 해야함
                                   Text(
                                    '   디폴트날짜       점심      칼로리: 1000kcal'
                                   ),
@@ -230,7 +248,7 @@ class CheckDietState extends State<CheckDiet>
                           ),
                         ),
 
-                      Container(                  //앨범에서 가져온 사진 띄워지는 곳, 사진 누르면 식단 수정 페이지로 이동하게 해보자@@@@@@
+                      Container(                  //앨범에서 가져온 사진 띄워지는 곳, 
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 1.5),
                             //borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -277,7 +295,7 @@ class CheckDietState extends State<CheckDiet>
                           ),
                         ),
 
-                        Container(                  //앨범에서 가져온 사진 띄워지는 곳, 사진 누르면 식단 수정 페이지로 이동하게 해보자@@@@@@
+                        Container(                  //앨범에서 가져온 사진 띄워지는 곳, 
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 1.5),
                             //borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -336,7 +354,7 @@ class CheckDietState extends State<CheckDiet>
             //   crossAxisAlignment: CrossAxisAlignment.start,
             //   children: [
             //     Expanded(
-            //       child: Container(                  //앨범에서 가져온 사진 띄워지는 곳, 사진 누르면 식단 수정 페이지로 이동하게 해보자@@@@@@
+            //       child: Container(                  //앨범에서 가져온 사진 띄워지는 곳, 
             //         decoration: BoxDecoration(
             //           border: Border.all(color: Colors.grey, width: 1.5),
             //           borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -387,6 +405,50 @@ class CheckDietState extends State<CheckDiet>
           builder: (BuildContext context) => EditDiet2()    
       
       ), (route) => false);
+  }
+
+  /*sendMainPage() async{   //#7
+  //#7호출
+    DietListDto dietList = new DietListDto(KakaoLoginState.user_id, dsfda, meal);   //2번째 인자에 created_at에 들어갈 날짜 정보 생성해서 넣어야함, meal은 디폴트 값 4
+    var DietListJson = dietList.toJson();
+    print(DietListJson);
+
+    final url = 'http://3.38.106.149/users/';
+    print(Uri.parse(url));
+
+    print(url);
+    //sending a post request to the url
+
+    final response = await http.post(Uri.parse(url), body: json.encode(DietListJson), headers: {'Content-Type':'application/json'});   
+    print('hello');
+    print(response.body);
+
+    ///////////////////////////////////// 여기에 서버에서 온 값들 변수에 저장해놔야함 #7    많이 복잡하네;;
+  } */
+  
+  send4DeleteDiet() async{   // #9 호출
+    final url = 'http://3.38.106.149/diets?diet_id=i&user_id=j';
+    print(Uri.parse(url));
+
+    print(url);
+    //sending a post request to the url
+
+    final response = await http.delete(Uri.parse(url));   
+    print('hello');
+    print(response.body);
+
+  }
+
+  send4EditDiet2() async{
+    final url = 'http://3.38.106.149/diets?diet_id=i';
+    print(Uri.parse(url));
+
+    print(url);
+    //sending a post request to the url
+
+    final response = await http.get(Uri.parse(url));   
+    print('hello');
+    print(response.body);
   }
 
 }

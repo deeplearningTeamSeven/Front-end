@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:http/http.dart' as http;
 
 // 회원 정보 페이지 UI와 기능
 class Management extends StatefulWidget {
@@ -79,9 +80,12 @@ class _ManagementState extends State<Management> {
             ),
             Container(
                 child: RaisedButton(
-                  child: Text("회원탈퇴"),
+                  child: Text("회원탈퇴"), // #3 호출 
                   onPressed: () {
                     //logOutTalk();    //로그아웃
+
+                    send4UserDelete();  // #3
+
                     unlinkTalk();    //회원탈퇴
                     storage.delete(key: "login");    //login이라는 키 값을 없애줌 얘도 회원탈퇴 버튼에 넣어야함
 
@@ -112,5 +116,19 @@ class _ManagementState extends State<Management> {
     } catch (e) {
       print('unlinkTalk error=${e.toString()}');
     }
+  }
+
+  send4UserDelete() async{   // #3 호출
+    final url = 'http://3.38.106.149/users/account?user_id=i';
+    print(Uri.parse(url));
+
+    print(url);
+    //sending a post request to the url
+
+    final response = await http.delete(Uri.parse(url));    //요 response를 검색 창에서 쓸 수 있게 해야함
+    print('hello');
+    print(response.body);
+
+
   }
 }

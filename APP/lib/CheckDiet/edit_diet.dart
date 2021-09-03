@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:ai_project/MemberInfo/management.dart';
+import 'package:ai_project/SearchDiet/search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,8 @@ import 'package:ai_project/CheckDiet/image_load_button.dart';
 import 'package:ai_project/CheckDiet/add_diet.dart';
 import 'package:ai_project/CheckDiet/edit_diet2.dart';
 import 'package:ai_project/CheckDiet/inboon_button.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class EditDiet extends StatefulWidget {
   const EditDiet({ Key? key }) : super(key: key);
@@ -367,13 +370,16 @@ class _EditDietState extends State<EditDiet> {
                                   borderRadius: BorderRadius.circular(30.0),
                                   // side: BorderSide(color: Color(0xFF151026), width: 5),
                                 ),
-                                onPressed: () {   //등록 버튼 눌렀을 때
+                                onPressed: () {   //완료 버튼 눌렀을 때   #5번 호출, 메인 페이지로 이동
                                   print('완료버튼 pressed');
                                   //pickImage2(ImageSource.gallery);
                                   //print('식단조회 페이지에 등록되는 이미지');
                                   //print(new_image);
                                   //image4checkdiet= ImageLoadButtonState.image!;
                                   //print(image4checkdiet);
+                                  send4EditDiet();    // #5 호출하고
+                                  //// diet_id 받아서 저장
+
                                   change2EditDiet2();
 
                               },                
@@ -401,7 +407,7 @@ class _EditDietState extends State<EditDiet> {
                                   borderRadius: BorderRadius.circular(30.0),
                                   // side: BorderSide(color: Color(0xFF151026), width: 5),
                                 ),
-                                onPressed: () {   //등록 버튼 눌렀을 때
+                                onPressed: () {   //추가 버튼 눌렀을 때
                                   print('추가버튼 pressed');
                                   //pickImage2(ImageSource.gallery);
                                   //print('식단조회 페이지에 등록되는 이미지');
@@ -409,10 +415,13 @@ class _EditDietState extends State<EditDiet> {
                                   //image4checkdiet= ImageLoadButtonState.image!;
                                   //print(image4checkdiet);
                                   //change2SubMain();
+                                  send4DietSearch();  // #13호출
+                                  change2SearchDiet();  //검색 창으로 이동, 거기서 음식 누르면, 받은 데이터 변수에 저장해서 화면에 그 음식이 추가되게 해야함
+
 
                               },                
                               child: const Text(
-                                '추가',
+                                '추가',                       //추가(식단 검색) 버튼을 눌렀을때는 #13호출, 
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 20,
@@ -439,6 +448,31 @@ class _EditDietState extends State<EditDiet> {
     Navigator.pushAndRemoveUntil(context,
       MaterialPageRoute(
           builder: (BuildContext context) => EditDiet2()    
+      
+      ), (route) => false);
+  }
+
+  send4EditDiet() async{   // #5
+
+
+  }
+
+  send4DietSearch() async{
+    final url = 'http://3.38.106.149/diets/search?food_name=i';
+    print(Uri.parse(url));
+
+    print(url);
+    //sending a post request to the url
+
+    final response = await http.get(Uri.parse(url));    //요 response를 검색 창에서 쓸 수 있게 해야함
+    print('hello');
+    print(response.body);
+  }
+
+  change2SearchDiet() {
+    Navigator.pushAndRemoveUntil(context,
+      MaterialPageRoute(
+          builder: (BuildContext context) => ExamplePage()    
       
       ), (route) => false);
   }

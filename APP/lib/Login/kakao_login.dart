@@ -7,17 +7,20 @@ import 'package:kakao_flutter_sdk/user.dart';
 import 'package:ai_project/MemberInfo/input_info.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:ai_project/Class4Flask/userDto.dart';
 
 class KakaoLogin extends StatefulWidget {    //로그인 기능 & ui
   const KakaoLogin({Key? key}) : super(key: key);
 
   @override
-  _KakaoLoginState createState() => _KakaoLoginState();
+  KakaoLoginState createState() => KakaoLoginState();
 }
 
-class _KakaoLoginState extends State<KakaoLogin> {
+class KakaoLoginState extends State<KakaoLogin> {
   static const storage = FlutterSecureStorage();
-  String userName = "";
+  static String userName = "";
+  static String userEmail = "";
+  static String user_id = "";
 
   @override
   void initState() {
@@ -95,20 +98,38 @@ class _KakaoLoginState extends State<KakaoLogin> {
       var userName = await _getUserId();
       var userEmail = await _getUserEmail();
       await storage.write(key: 'userName', value: userName); 
-      print(userName);
-      print(userEmail);
+      await storage.write(key: 'email', value: userEmail);
+      
+      
+      
+      
+    
+      UserDto user = new UserDto(userName,userEmail);
+      var userJson=user.toJson();
+      print(userJson);
 
+ 
+    
       //post request
 
       //url to send the post request to 
-      final url = 'http://10.0.2.2:5000/user';  
+      final url = 'http://3.38.106.149/login/';
+      print(Uri.parse(url));
       
       print(url);
       //sending a post request to the url
-      final response = await http.post(Uri.parse(url), body: json.encode({'userName': userName}));    // 메일도 추가
-      print(response);
+ 
+      final response = await http.post(Uri.parse(url), body: json.encode(userJson), headers: {'Content-Type':'application/json'});   
+      print('hello');
+      print(response.body);
 
-      Navigator.pushReplacement(
+      if (response.statusCode==200){
+        Map userMap=jsonDecode(response.body);    //response를 디코딩해서 변수에 저장
+        print(userMap);
+        user_id = userMap['user_id'].toString();   
+        await storage.write(key: 'userid', value: user_id);   //user_id 기기에 저장
+
+        Navigator.pushReplacement(
         context,
         MaterialPageRoute(        
             builder: (context) => InputInfo(
@@ -116,16 +137,21 @@ class _KakaoLoginState extends State<KakaoLogin> {
                   pressed_save_button: 0,
                 )),
       );
+      }else{
+        print('response statusCode is not 200');
+        //어떻게 처리하지?
+
+      }      
     } catch (e) {
       print("error on issuing access token: $e");
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(        
-            builder: (context) => InputInfo(
-                  additional_text: '개인 맞춤 서비스를 위해\n신체 정보를 꼭 입력해주세요!',
-                  pressed_save_button: 0,
-                )),
-      );
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(        
+      //       builder: (context) => InputInfo(
+      //             additional_text: '개인 맞춤 서비스를 위해\n신체 정보를 꼭 입력해주세요!',
+      //             pressed_save_button: 0,
+      //           )),
+      // );
     } 
   }  
 
@@ -162,4 +188,6 @@ class _KakaoLoginState extends State<KakaoLogin> {
       ),
     );
   }
+
+  
 }

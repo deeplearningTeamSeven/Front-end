@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:ai_project/CheckDiet/check_diet.dart';
 import 'package:ai_project/camera_test.dart';
 import 'package:ai_project/sub_main.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';  
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
@@ -42,8 +42,8 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //return Login();
-    //return const StartPage();
-    return SubMain();
+    return const StartPage();
+    //return SubMain();
     // return ctest();
   }
 }

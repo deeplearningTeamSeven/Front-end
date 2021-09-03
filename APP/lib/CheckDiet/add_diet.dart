@@ -273,13 +273,18 @@ class WriteDietState extends State<WriteDiet> {
                     borderRadius: BorderRadius.circular(30.0),
                     // side: BorderSide(color: Color(0xFF151026), width: 5),
                   ),
-                  onPressed: () {                                    //등록 버튼 눌렀을 때 /predict로 이미지 file AI모델에 전달
+                  onPressed: () {                                    //등록 버튼 눌렀을 때 날짜랑 식사시간 저장한 상태에서 #4번 호출 /predict로 이미지 file AI모델에 전달
                     print('등록버튼 pressed');
                     //pickImage2(ImageSource.gallery);
                     //print('식단조회 페이지에 등록되는 이미지');
                     //print(new_image);
                     image4checkdiet= ImageLoadButtonState.image!;
                     print(image4checkdiet);
+                    send4predict();  // #4
+                    /// 음식명, 이름, 칼로리 정보 변수에 저장 후 editDiet 페이지에 출력할 수 있게함
+                    
+
+
                     change2EditDiet();
 
                   },                
@@ -305,6 +310,11 @@ class WriteDietState extends State<WriteDiet> {
           builder: (BuildContext context) => EditDiet()    
       
       ), (route) => false);
+  }
+
+  send4predict() async{    // #4   이미지 파일을 어떤 형식으로 보내야지?
+
+
   }
   
 

@@ -12,7 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:ai_project/CheckDiet/menu_button_ui.dart';
 
-class DietRecommend extends StatefulWidget {
+class DietRecommend extends StatefulWidget {           //#11에서 받은 정보들 출력
   const DietRecommend({ Key? key }) : super(key: key);
 
   @override
@@ -140,7 +140,7 @@ class _DietRecommendState extends State<DietRecommend> {
                   Container(
                     child: IconButton(
                       onPressed: () {
-                        print("liked");
+                        print("liked");               //누르면 #12호출, 일단 나중에 하자(다시 눌렀을 때 어케할지)
                         setState(() {
                           if(_iconColor1== Colors.red){
                             _iconColor1 = Colors.red.shade900;
