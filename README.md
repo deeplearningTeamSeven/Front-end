@@ -1,0 +1,2 @@
+# Front-end
+[sixsense] frontend
