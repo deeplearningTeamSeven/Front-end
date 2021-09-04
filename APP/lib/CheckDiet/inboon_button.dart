@@ -16,7 +16,7 @@ class _NormalMenuButton2State extends State<NormalMenuButton2> {
 
   late String selectedKey;
 
-  List<String> keys = <String>['1/4인분', '1/2인분', '3/4인분', '1인분','2인분'];
+  List<String> keys = <String>['1/4인분', '1/2인분', '3/4인분', '1인분', '2인분'];
 
   @override
   void initState() {

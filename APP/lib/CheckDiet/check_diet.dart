@@ -439,7 +439,7 @@ class CheckDietState extends State<CheckDiet>
 
   }
 
-  send4EditDiet2() async{
+  send4EditDiet2() async{   // #8
     final url = 'http://3.38.106.149/diets?diet_id=i';
     print(Uri.parse(url));
 
@@ -449,6 +449,8 @@ class CheckDietState extends State<CheckDiet>
     final response = await http.get(Uri.parse(url));   
     print('hello');
     print(response.body);
+
+    // 사진, 음식이름, 칼로리, 인분 정보 변수에 저장 후 dietedit2 화면에 출력
   }
 
 }

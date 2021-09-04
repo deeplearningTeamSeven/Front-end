@@ -8,6 +8,7 @@ import 'package:ai_project/MemberInfo/input_info.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:ai_project/Class4Flask/userDto.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class KakaoLogin extends StatefulWidget {    //로그인 기능 & ui
   const KakaoLogin({Key? key}) : super(key: key);
@@ -17,10 +18,11 @@ class KakaoLogin extends StatefulWidget {    //로그인 기능 & ui
 }
 
 class KakaoLoginState extends State<KakaoLogin> {
-  static const storage = FlutterSecureStorage();
+  static final storage = new FlutterSecureStorage();
+
   static String userName = "";
   static String userEmail = "";
-  static String user_id = "";
+  late int user_id;             ///
 
   @override
   void initState() {
@@ -126,8 +128,10 @@ class KakaoLoginState extends State<KakaoLogin> {
       if (response.statusCode==200){
         Map userMap=jsonDecode(response.body);    //response를 디코딩해서 변수에 저장
         print(userMap);
-        user_id = userMap['user_id'].toString();   
-        await storage.write(key: 'userid', value: user_id);   //user_id 기기에 저장
+        user_id = userMap['user_id'];   
+        //SharedPreferences prefs = await SharedPreferences.getInstance();
+        //prefs.setInt('user_id');
+        await storage.write(key: 'userid', value: user_id.toString());   //user_id 기기에 저장         
 
         Navigator.pushReplacement(
         context,

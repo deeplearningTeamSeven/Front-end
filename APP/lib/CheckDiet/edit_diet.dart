@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'package:ai_project/Class4Flask/send5.dart';
+import 'package:ai_project/Login/kakao_login.dart';
 import 'package:ai_project/MemberInfo/management.dart';
 import 'package:ai_project/SearchDiet/search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:group_button/group_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ai_project/sub_main.dart';
@@ -19,10 +22,22 @@ class EditDiet extends StatefulWidget {
   const EditDiet({ Key? key }) : super(key: key);
 
   @override
-  _EditDietState createState() => _EditDietState();
+  EditDietState createState() => EditDietState();
 }
 
-class _EditDietState extends State<EditDiet> {
+class EditDietState extends State<EditDiet> {
+  static const storage = FlutterSecureStorage();
+  static String diet_id = "";
+  List food_list = [{"no":246,
+   "name":"쌀밥",
+    "amount":1
+  },
+  {
+  "no":345,
+  "name":"미역국",
+  "amount":1 
+  }]; 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +104,7 @@ class _EditDietState extends State<EditDiet> {
                     children: [
                       Flexible(
                         child: Text(
-                    '불고기fgagfadgadfgadg'
+                    WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
                   ),
                       ),
                   SizedBox(
@@ -106,7 +121,7 @@ class _EditDietState extends State<EditDiet> {
                     child: Column(
                       children: [
                         Text(
-                          '칼로리: 1000kcal'
+                          WriteDietState.cal.toString() + ' kcal'    //서버에서 받은 칼로리 정보 출력
                         ),
                         
                       ],
@@ -142,7 +157,7 @@ class _EditDietState extends State<EditDiet> {
                     children: [
                       Flexible(
                         child: Text(
-                    '불고기fgagfadgadfgadg'
+                    WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
                   ),
                       ),
                   SizedBox(
@@ -159,7 +174,7 @@ class _EditDietState extends State<EditDiet> {
                     child: Column(
                       children: [
                         Text(
-                          '칼로리: 1000kcal'
+                          WriteDietState.cal.toString() + ' kcal'    //서버에서 받은 칼로리 정보 출력
                         ),
                         
                       ],
@@ -195,7 +210,7 @@ class _EditDietState extends State<EditDiet> {
                     children: [
                       Flexible(
                         child: Text(
-                    '불고기fgagfadgadfgadg'
+                    WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
                   ),
                       ),
                   SizedBox(
@@ -212,7 +227,7 @@ class _EditDietState extends State<EditDiet> {
                     child: Column(
                       children: [
                         Text(
-                          '칼로리: 1000kcal'
+                          WriteDietState.cal.toString() + ' kcal'    //서버에서 받은 칼로리 정보 출력
                         ),
                         
                       ],
@@ -248,7 +263,7 @@ class _EditDietState extends State<EditDiet> {
                     children: [
                       Flexible(
                         child: Text(
-                    '불고기fgagfadgadfgadg'
+                    WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
                   ),
                       ),
                   SizedBox(
@@ -265,7 +280,7 @@ class _EditDietState extends State<EditDiet> {
                     child: Column(
                       children: [
                         Text(
-                          '칼로리: 1000kcal'
+                          WriteDietState.cal.toString() + ' kcal'     //서버에서 받은 칼로리 정보 출력
                         ),
                         
                       ],
@@ -301,7 +316,7 @@ class _EditDietState extends State<EditDiet> {
                     children: [
                       Flexible(
                         child: Text(
-                    '불고기fgagfadgadfgadg'
+                    WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
                   ),
                       ),
                   SizedBox(
@@ -318,7 +333,7 @@ class _EditDietState extends State<EditDiet> {
                     child: Column(
                       children: [
                         Text(
-                          '칼로리: 1000kcal'
+                          WriteDietState.cal.toString() + ' kcal'     //서버에서 받은 칼로리 정보 출력
                         ),
                         
                       ],
@@ -380,7 +395,7 @@ class _EditDietState extends State<EditDiet> {
                                   send4EditDiet();    // #5 호출하고
                                   //// diet_id 받아서 저장
 
-                                  change2EditDiet2();
+                                  change2MainPage();     //메인 화면으로 이동
 
                               },                
                               child: const Text(
@@ -394,8 +409,8 @@ class _EditDietState extends State<EditDiet> {
                             ),
                             ),
                             SizedBox(
-              width: 50.0,
-            ),
+                              width: 50.0,
+                            ),
 
                             Container(
                               // margin: EdgeInsets.only(right: 18, left: 18, top: 5),
@@ -444,20 +459,42 @@ class _EditDietState extends State<EditDiet> {
     );
   }
 
-  change2EditDiet2() {
+  change2MainPage() {
     Navigator.pushAndRemoveUntil(context,
       MaterialPageRoute(
-          builder: (BuildContext context) => EditDiet2()    
+          builder: (BuildContext context) => SubMain()    
       
       ), (route) => false);
   }
 
   send4EditDiet() async{   // #5
+  print('------------------------------------------------------------');
+  Send5 send5 = new Send5(8, food_list, '2021-08-16', 1);   
+  var DietListJson = send5.toJson();
+  print(DietListJson);
 
+  final url = 'http://3.38.106.149/diets/';
+  print(Uri.parse(url));
 
+  print(url);
+  //sending a post request to the url
+
+  final response = await http.post(Uri.parse(url), body: json.encode(DietListJson), headers: {'Content-Type':'application/json'});   
+  print('hello2');
+  print(response);
+  print(response.body);
+  print('hello3');
+
+  if (response.statusCode==200){
+        Map userMap=jsonDecode(response.body);    //response를 디코딩해서 변수에 저장
+        print(userMap);
+        diet_id = userMap['diet_id'].toString();   
+        await storage.write(key: 'userid', value: diet_id);   //diet_id 기기에 저장
+
+      }
   }
 
-  send4DietSearch() async{
+  send4DietSearch() async{   // #13
     final url = 'http://3.38.106.149/diets/search?food_name=i';
     print(Uri.parse(url));
 

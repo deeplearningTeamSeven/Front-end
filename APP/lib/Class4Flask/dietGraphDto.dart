@@ -1,7 +1,9 @@
 // #10
 import 'package:ai_project/Login/kakao_login.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class DietGraphDto {
+  static final storage = FlutterSecureStorage();
   String userId;
    String start_date;
    String end_date; 
@@ -14,9 +16,9 @@ class DietGraphDto {
         end_date = json['end_date'],
         userId=json['user_id'];
 
-  Map<String, dynamic> toJson() =>
+  Future<Map<String, dynamic>> toJson() async =>
     {
-      'user_id' : KakaoLoginState.user_id,
+      'user_id' : await storage.read(key: "user_id"),
       'start_date': start_date,
       'end_date': end_date,
       

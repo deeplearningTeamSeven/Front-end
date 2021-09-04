@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:ai_project/CheckDiet/edit_diet.dart';
 import 'package:ai_project/MemberInfo/management.dart';
@@ -10,6 +11,7 @@ import 'package:ai_project/sub_main.dart';
 import 'package:ai_project/CheckDiet/check_diet.dart';
 import 'package:ai_project/CheckDiet/image_load_button.dart';
 import 'package:ai_project/CheckDiet/edit_diet.dart';
+import 'package:http/http.dart' as http;
 
 // 식단 추가 작성 페이지 (인공지능에 들어가기 전 페이지)
 class WriteDiet extends StatefulWidget {
@@ -26,6 +28,10 @@ class WriteDietState extends State<WriteDiet> {
   TextEditingController day_value = TextEditingController();
   File? new_image; // 다시 선택하기 버튼 누를 때 불러올 이미지 변수
   static File image4checkdiet = File('file.txt');   //식단조회 페이지로 보낼 이미지 변수   ***null로 만들수 없어서 file.txt넣어둠
+
+  static double cal = 31.0;
+  static String name = '수박';
+  static int amount = 1;
 
   Future pickImage(ImageSource imageSource) async {
     try {
@@ -280,12 +286,12 @@ class WriteDietState extends State<WriteDiet> {
                     //print(new_image);
                     image4checkdiet= ImageLoadButtonState.image!;
                     print(image4checkdiet);
-                    send4predict();  // #4
+                   // send4predict();  // #4
                     /// 음식명, 이름, 칼로리 정보 변수에 저장 후 editDiet 페이지에 출력할 수 있게함
                     
 
 
-                    change2EditDiet();
+                    change2EditDiet();  // editdiet 페이지로 이동
 
                   },                
                   child: const Text(
@@ -312,10 +318,29 @@ class WriteDietState extends State<WriteDiet> {
       ), (route) => false);
   }
 
-  send4predict() async{    // #4   이미지 파일을 어떤 형식으로 보내야지?
+  // send4predict() async{    // #4   이미지 파일을 어떤 형식으로 보내야지?
+  //   final url = 'http://3.38.106.149/predict/';
+  //   print(Uri.parse(url));
 
+  //   print(url);
+  //   //sending a post request to the url
 
-  }
+  //  // final response = await http.post(Uri.parse(url), body: json.encode(DietListJson), headers: {'Content-Type':'application/json'});   
+  //   print('hello2');
+  //  // print(response);
+  //   //print(response.body);
+  //   print('hello3');
+
+  //   ///////////////////////////////////// 여기에 서버에서 온 값들 변수에 저장해놔야함     
+  //  // Map userMap=jsonDecode(response.body);    //response를 디코딩해서 변수에 저장
+  //   print(userMap);
+  //   print('hello4');
+  //   //diet_list = userMap['diet_list'].toString();
+  //   cal = userMap['food']['cal'].toString();
+  //   name = userMap['food']['name'].toString();
+  //   amount = userMap['food']['amount'].toString();
+
+  // }
   
 
 

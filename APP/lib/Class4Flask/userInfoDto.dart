@@ -1,14 +1,16 @@
 // #2
 
+import 'dart:ffi';
+
 import 'package:ai_project/Login/kakao_login.dart';
 
 class UserInfoDto {  //user_id, age, gender, height, weight, activity_level
-   String age;
-   String gender;
-   String height;
-   String weight;
-   String activity_level; 
-   String user_id;
+   int age;
+   int gender;
+   double height;
+   double weight;
+   int activity_level; 
+   int user_id;
   
 
   UserInfoDto(this.user_id, this.age, this.gender, this.height, this.weight, this.activity_level);

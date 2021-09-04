@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:ai_project/Class4Flask/dietListDto.dart';
 import 'package:ai_project/Class4Flask/userInfoDto.dart';
 import 'package:ai_project/Login/kakao_login.dart';
@@ -5,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 import '../sub_main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,16 +28,27 @@ class InputInfo extends StatefulWidget {
 }
 
 class _InputInfoState extends State<InputInfo> {
+  // late List<int> no;
+  // late List<Double> cal; 
+  // late List<String> name; 
+  // late List<int> amount;
+
+//가짜 데이터
+  // late List<int> no = [9298];
+  // late List<double> cal = [245.0]; 
+  // late List<String> name = ['베이컨']; 
+  // late List<int> amount = [1];
+  
+  static final storage = FlutterSecureStorage();
   int gender_current_seg = 0;
   int activity_index_current_seg = 0;
   //String userId = '1';
-  String meal = '4';
-  String created_at = '2021-09-03';
-  String gender = '';
-  String activity = '';
+  int meal = 4;
+  var created_at= DateTime.now();           
+  //
+  late int gender;
+  late int activity;
 
-  String cal = '';
-  String img_path = '';
 
   // 사용가자 입력한 값 가져오기 위한 컨트롤러
   TextEditingController member_height = TextEditingController();
@@ -248,24 +263,24 @@ class _InputInfoState extends State<InputInfo> {
                     ),
                     onPressed: () {                  ////////////// #2으로  users PUT 먼저 하고, if 200일떄 메인화면으로 이동하면서, #7을 호출한다
                     if(gender_segments[gender_current_seg].toString()=='Text("남자")'){
-                      gender = '2';
+                      gender = 2;
                     }else if(gender_segments[gender_current_seg].toString()=='Text("여자")'){
-                      gender = '1';
+                      gender = 1;
                     }
 
                     if(activity_index_segments[activity_index_current_seg].toString()=='Text("비활동적")'){
-                      activity = '1';
+                      activity = 1;
 
                     }else if(activity_index_segments[activity_index_current_seg].toString()=='Text("저활동적")'){
-                      activity = '2';
+                      activity = 2;
 
                     }
                     else if(activity_index_segments[activity_index_current_seg].toString()=='Text("활동적")'){
-                      activity = '3';
+                      activity = 3;
                       
                     }
                     else if(activity_index_segments[activity_index_current_seg].toString()=='Text("매우 활동적")'){
-                      activity = '4';
+                      activity = 4;
                       
                     }
                       sendUserInfo();   //#2
@@ -291,13 +306,15 @@ class _InputInfoState extends State<InputInfo> {
 
 
   sendUserInfo() async{   //#2
+    //String? user_id = await storage.read(key: "user_id");
    
-    UserInfoDto userInfo = new UserInfoDto(KakaoLoginState.user_id, member_age.value.text.toString(), gender, member_height.value.text.toString(), member_weight.value.text.toString(), activity);
+    UserInfoDto userInfo = new UserInfoDto(3, int.parse(member_age.value.text), gender, double.parse(member_height.value.text), double.parse(member_weight.value.text), activity);
     var userInfoJson = userInfo.toJson();
     text_print();
     print(gender);
     print(activity);
     print(userInfoJson);
+    print(json.encode(userInfoJson));
 
     final url = 'http://3.38.106.149/users/';
     print(Uri.parse(url));
@@ -308,6 +325,7 @@ class _InputInfoState extends State<InputInfo> {
     final response = await http.put(Uri.parse(url), body: json.encode(userInfoJson), headers: {'Content-Type':'application/json'});   
     print('hello1');
     print(response.body);
+    print(response.statusCode); //
 
     if (response.statusCode==200){
       Map userMap=jsonDecode(response.body);
@@ -320,10 +338,14 @@ class _InputInfoState extends State<InputInfo> {
   }
 
  sendMainPage() async{   //#7
+  
   //#7호출
-  DietListDto dietList = new DietListDto(KakaoLoginState.user_id, created_at, meal);   //2번째 인자에 created_at에 들어갈 날짜 정보 생성해서 넣어야함, meal은 디폴트 값 4
+  //String? user_id = await storage.read(key: "user_id");
+//DateFormat('M/d/y').format(date),
+  DietListDto dietList = new DietListDto(3, DateFormat('y-M-d').format(created_at).toString(), meal);   //2번째 인자에 created_at에 들어갈 날짜 정보 생성해서 넣어야함, meal은 디폴트 값 4
   var DietListJson = dietList.toJson();
   print(DietListJson);
+  print(json.encode(DietListJson));
 
   final url = 'http://3.38.106.149/diets/list';
   print(Uri.parse(url));
@@ -341,10 +363,22 @@ class _InputInfoState extends State<InputInfo> {
   Map userMap=jsonDecode(response.body);    //response를 디코딩해서 변수에 저장
   print(userMap);
   print('hello4');
-  //diet_list = userMap['diet_list'].toString();
-  cal = userMap['diet_list']['cal'].toString();
-  img_path = userMap['diet_list']['img_path'].toString(); 
-  print(img_path);
+
+  /////////////////////////////////////////불러올 때 for문
+  
+  // var diet_list = userMap['diet_list'];
+  // print(diet_list);
+  // if(dietList == null){
+  // //for (int i=0; i<=diet_list.length-1;  i++){  
+  //   for (int i=0; i<1;  i++){ 
+  //     no[i] = diet_list[i]['no'];
+  //     cal[i] = diet_list[i]['cal'];
+  //     name[i] = diet_list[i]['name'];
+  //     amount[i] = diet_list[i]['amount']; 
+
+  //     }                                       
+  //     print(no[0]);
+  //   }
 
 
   widget.pressed_save_button == 0
