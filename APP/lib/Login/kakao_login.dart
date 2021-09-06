@@ -19,7 +19,7 @@ class KakaoLogin extends StatefulWidget {    //로그인 기능 & ui
 
 class KakaoLoginState extends State<KakaoLogin> {
   static final storage = new FlutterSecureStorage();
-
+  final prefs=await SharedPreferences.getInstance();
   static String userName = "";
   static String userEmail = "";
   late int user_id;             ///
@@ -93,14 +93,16 @@ class KakaoLoginState extends State<KakaoLogin> {
   _issueAccessToken(String authCode) async {
     try {
       var token = await AuthApi.instance.issueAccessToken(authCode);
-      //var email = 
+      
       AccessTokenStore.instance.toStore(token);
       //print(token.toString());
       await _getUserInfo();
       var userName = await _getUserId();
       var userEmail = await _getUserEmail();
-      await storage.write(key: 'userName', value: userName); 
-      await storage.write(key: 'email', value: userEmail);
+      prefs.setString('userName',userName);
+      prefs.setString('email',userEmail);
+      // await storage.write(key: 'userName', value: userName); 
+      // await storage.write(key: 'email', value: userEmail);
       
       
       
@@ -130,7 +132,8 @@ class KakaoLoginState extends State<KakaoLogin> {
         print(userMap);
         user_id = userMap['user_id'];   
         //SharedPreferences prefs = await SharedPreferences.getInstance();
-        //prefs.setInt('user_id');
+        prefs.setInt('user_id',user_id);
+
         await storage.write(key: 'userid', value: user_id.toString());   //user_id 기기에 저장         
 
         Navigator.pushReplacement(

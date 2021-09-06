@@ -4,11 +4,11 @@ import 'package:ai_project/Login/kakao_login.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Send5 {
-  late int user_id;
+  int user_id;
   //late List<FoodList> food_list;
-  late FoodList food_list;
-  late String created_at;
-  late int meal;
+  List <FoodList> food_list;
+  String created_at;
+  int meal;
 
   Send5(this.user_id, this.food_list, this.created_at, this.meal);
 
@@ -24,22 +24,22 @@ class Send5 {
     meal = json['meal'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this.user_id;
-    if (this.food_list != null) {
-      //data['food_list'] = this.food_list.map((v) => v.toJson()).toList();
+  Map toJson() {
+    List<Map> food_list=this.food_list !=null ? this.food_list.map((i)=>i.toJson()).toList() :null;
+    
+    return{
+      'user_id':user_id,
+      'food_list':food_list,
+      'created_at':created_at,
+      'meal':meal
     }
-    data['created_at'] = this.created_at;
-    data['meal'] = this.meal;
-    return data;
   }
 }
 
 class FoodList {
-  late int no;
-  late String name;
-  late int amount;
+  int no;
+  String name;
+  int amount;
 
   FoodList(this.no,  this.name,  this.amount);
 
@@ -49,11 +49,11 @@ class FoodList {
     amount = json['amount'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['no'] = this.no;
-    data['name'] = this.name;
-    data['amount'] = this.amount;
-    return data;
+  Map toJson() =>{
+   
+    'no' = this.no;
+    'name' = this.name;
+    'amount' = this.amount;
+   
   }
 }

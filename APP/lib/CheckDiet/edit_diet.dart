@@ -464,7 +464,13 @@ class EditDietState extends State<EditDiet> {
 
   send4EditDiet() async{   // #5
   print('------------------------------------------------------------');
-  Send5 send5 = new Send5(3, food_list, '2021-08-16', 1);   
+  List<food_list> food_list
+  food_list.append(FoodList(246,'쌀밥',1))
+  food_list.append(FoodList(345,"미역국",1))
+  final user_id = prefs.getInt('user_id') ?? 0;
+  String created_at=month_value+day_value
+  print(created_at);
+  Send5 send5 = new Send5(user_id, food_list,created_at, mealTime);   
   var DietListJson = send5.toJson();
   print(DietListJson);
 
@@ -490,7 +496,10 @@ class EditDietState extends State<EditDiet> {
   }
 
   send4DietSearch() async{   // #13
-    final url = 'http://3.38.106.149/diets/search?food_name=i';
+    var queryParams=json.encode){
+      'food_name':"떡볶이"
+    })
+    final url = 'http://3.38.106.149/diets/search?food_name=$queryParams';
     print(Uri.parse(url));
 
     print(url);
