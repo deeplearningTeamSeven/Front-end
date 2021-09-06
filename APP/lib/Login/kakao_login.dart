@@ -18,8 +18,9 @@ class KakaoLogin extends StatefulWidget {    //로그인 기능 & ui
 }
 
 class KakaoLoginState extends State<KakaoLogin> {
+  late SharedPreferences prefs;
   static final storage = new FlutterSecureStorage();
-  final prefs=await SharedPreferences.getInstance();
+  
   static String userName = "";
   static String userEmail = "";
   late int user_id;             ///
@@ -63,17 +64,22 @@ class KakaoLoginState extends State<KakaoLogin> {
   }
   late String name;
   _getUserId() async {
+    prefs=await SharedPreferences.getInstance();
     User user = await UserApi.instance.me();
     setState(() {
       name = user.kakaoAccount?.profile?.toJson()['nickname'];
+      prefs.setString('userName',name);
     });
     print('이름: '+ name);
     return name;
   }
 
   _getUserEmail() async {
+    prefs=await SharedPreferences.getInstance();
     User user = await UserApi.instance.me();
     print('이메일 주소: ' + user.kakaoAccount!.email.toString());
+    String email=user.kakaoAccount!.email.toString();
+    prefs.setString('email',email);
     return user.kakaoAccount!.email.toString();
   }
 
@@ -99,8 +105,6 @@ class KakaoLoginState extends State<KakaoLogin> {
       await _getUserInfo();
       var userName = await _getUserId();
       var userEmail = await _getUserEmail();
-      prefs.setString('userName',userName);
-      prefs.setString('email',userEmail);
       // await storage.write(key: 'userName', value: userName); 
       // await storage.write(key: 'email', value: userEmail);
       

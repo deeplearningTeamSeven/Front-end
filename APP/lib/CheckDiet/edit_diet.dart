@@ -19,6 +19,8 @@ import 'package:ai_project/CheckDiet/inboon_button.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class EditDiet extends StatefulWidget {
   const EditDiet({ Key? key }) : super(key: key);
 
@@ -464,13 +466,14 @@ class EditDietState extends State<EditDiet> {
 
   send4EditDiet() async{   // #5
   print('------------------------------------------------------------');
-  List<food_list> food_list
-  food_list.append(FoodList(246,'쌀밥',1))
-  food_list.append(FoodList(345,"미역국",1))
+  List<FoodList> food_list=[];
+  food_list.add(FoodList(246,'쌀밥',1));
+  food_list.add(FoodList(345,"미역국",1));
+  var prefs=await SharedPreferences.getInstance();
   final user_id = prefs.getInt('user_id') ?? 0;
-  String created_at=month_value+day_value
+  String created_at="2021-09-07";
   print(created_at);
-  Send5 send5 = new Send5(user_id, food_list,created_at, mealTime);   
+  Send5 send5 = new Send5(user_id, food_list,created_at, 1);   
   var DietListJson = send5.toJson();
   print(DietListJson);
 
@@ -496,9 +499,9 @@ class EditDietState extends State<EditDiet> {
   }
 
   send4DietSearch() async{   // #13
-    var queryParams=json.encode){
+    var queryParams=json.encode({
       'food_name':"떡볶이"
-    })
+    });
     final url = 'http://3.38.106.149/diets/search?food_name=$queryParams';
     print(Uri.parse(url));
 

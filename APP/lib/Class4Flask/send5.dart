@@ -12,27 +12,29 @@ class Send5 {
 
   Send5(this.user_id, this.food_list, this.created_at, this.meal);
 
-  Send5.fromJson(Map<String, dynamic> json) {
-    user_id = json['user_id'];
-    if (json['food_list'] != null) {
-      //food_list = new List<FoodList>();
-      json['food_list'].forEach((v) {
-        //food_list.add(new FoodList.fromJson(v));
-      });
-    }
-    created_at = json['created_at'];
-    meal = json['meal'];
+  factory Send5.fromJson(Map<String, dynamic> json) {
+    return Send5(json['user_id'] as int, json['food_list'], json['created_at'] as String,json['meal']as int);
+    // user_id = json['user_id'] as int;
+    // if (json['food_list'] != null) {
+    //     //food_list = List<FoodList>;
+    //   json['food_list'].forEach((v) {
+    //       food_list.add(new FoodList.fromJson(v));
+    //   });
+    // }
+    // created_at = json['created_at'] as String;
+    // meal = json['meal'] as int;
   }
 
   Map toJson() {
-    List<Map> food_list=this.food_list !=null ? this.food_list.map((i)=>i.toJson()).toList() :null;
+    List<Map>? food_list=
+    this.food_list !=null ? this.food_list.map((i)=>i.toJson()).toList() :null;
     
     return{
       'user_id':user_id,
       'food_list':food_list,
       'created_at':created_at,
       'meal':meal
-    }
+    };
   }
 }
 
@@ -43,17 +45,17 @@ class FoodList {
 
   FoodList(this.no,  this.name,  this.amount);
 
-  FoodList.fromJson(Map<String, dynamic> json) {
-    no = json['no'];
-    name = json['name'];
-    amount = json['amount'];
-  }
+  FoodList.fromJson(Map<String, dynamic> json):
+      no =json['no'] as int,
+      name = json['name'] as String,
+      amount = json['amount'] as int;
+   
+   
 
   Map toJson() =>{
+    'no' :this.no,
+    'name' : this.name,
+    'amount' : this.amount
    
-    'no' = this.no;
-    'name' = this.name;
-    'amount' = this.amount;
-   
-  }
+  };
 }
