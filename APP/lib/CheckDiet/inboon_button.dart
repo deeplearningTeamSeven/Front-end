@@ -1,3 +1,5 @@
+import 'package:ai_project/CheckDiet/add_diet.dart';
+import 'package:ai_project/CheckDiet/edit_diet.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_button/menu_button.dart';
 
@@ -8,13 +10,14 @@ class NormalMenuButton2 extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _NormalMenuButton2State createState() => _NormalMenuButton2State();
+  NormalMenuButton2State createState() => NormalMenuButton2State();
 }
 
-class _NormalMenuButton2State extends State<NormalMenuButton2> {
+class NormalMenuButton2State extends State<NormalMenuButton2> {
   late BoxDecoration decoration;
 
   late String selectedKey;
+  static double selectedKeyValue = 1;
 
   List<String> keys = <String>['1/4인분', '1/2인분', '3/4인분', '1인분', '2인분'];
 
@@ -78,9 +81,9 @@ class _NormalMenuButton2State extends State<NormalMenuButton2> {
             color: Colors.grey,
           ),
           onItemSelected: (String value) {
-            setState(() {
               selectedKey = value;
-            });
+              selectAmountchangeCal();
+            
           },
           onMenuButtonToggle: (bool isToggle) {
             print(isToggle);
@@ -94,5 +97,36 @@ class _NormalMenuButton2State extends State<NormalMenuButton2> {
         ),
       ],
     );
+  }
+
+  selectAmountchangeCal(){
+    if(selectedKey == '1/4인분'){
+      selectedKeyValue = 0.25;
+      setState(() {
+        EditDietState.changedCalValue = (WriteDietState.cal * selectedKeyValue).toString();
+      });
+    }else if(selectedKey == '1/2인분'){
+      selectedKeyValue = 0.5;
+      setState(() {
+        EditDietState.changedCalValue = (WriteDietState.cal * selectedKeyValue).toString();
+      });
+    }else if(selectedKey == '3/4인분'){
+      selectedKeyValue = 0.75;
+      setState(() {
+        EditDietState.changedCalValue = (WriteDietState.cal * selectedKeyValue).toString();
+      });
+    }else if(selectedKey == '1인분'){
+      selectedKeyValue = 1;
+      setState(() {
+        EditDietState.changedCalValue = (WriteDietState.cal * selectedKeyValue).toString();
+      });
+    }else if(selectedKey == '2인분'){
+      selectedKeyValue = 2;
+      setState(() {
+        EditDietState.changedCalValue = (WriteDietState.cal * selectedKeyValue).toString();
+      });
+    }
+    print(selectedKeyValue);
+    print(EditDietState.changedCalValue);
   }
 }

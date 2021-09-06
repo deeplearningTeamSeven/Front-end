@@ -2,7 +2,8 @@ import 'dart:io';
 import 'package:ai_project/Class4Flask/send5.dart';
 import 'package:ai_project/Login/kakao_login.dart';
 import 'package:ai_project/MemberInfo/management.dart';
-import 'package:ai_project/SearchDiet/search_bar.dart';
+import 'package:ai_project/SearchDiet/search_bar1.dart';
+import 'package:ai_project/SearchDiet/search_bar2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,15 +29,9 @@ class EditDiet extends StatefulWidget {
 class EditDietState extends State<EditDiet> {
   static const storage = FlutterSecureStorage();
   static String diet_id = "";
-  List food_list = [{"no":246,
-   "name":"쌀밥",
-    "amount":1
-  },
-  {
-  "no":345,
-  "name":"미역국",
-  "amount":1 
-  }]; 
+  FoodList food_list = FoodList(323,  '사과',  1);              
+
+  static String changedCalValue = WriteDietState.cal.toString(); 
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +72,7 @@ class EditDietState extends State<EditDiet> {
                       
                       child:  Image.file(
                         
-                              WriteDietState.image4checkdiet,                ///////////////////// 널 체크 문제 발생!!!!!!!!!
+                              WriteDietState.image4checkdiet1,                ///////////////////// 널 체크 문제 발생!!!!!!!!!
                               fit: BoxFit.fill,
                             ),
                     ),
@@ -121,7 +116,60 @@ class EditDietState extends State<EditDiet> {
                     child: Column(
                       children: [
                         Text(
-                          WriteDietState.cal.toString() + ' kcal'    //서버에서 받은 칼로리 정보 출력
+                          changedCalValue + ' kcal'
+                        )            /////////////////////////////////////////////
+                        
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+              width: 20.0,
+            ),
+                  Container(
+                    child: IconButton(
+                      onPressed: () {
+                        print("delete diet");                       
+                      },
+                      icon: Icon(Icons.remove_circle, color: Colors.red),
+                                
+                      iconSize: 20.0,
+
+                    ),
+                  ),
+
+                    ],
+                    
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.all(15.0),
+                   padding: const EdgeInsets.all(3.0),
+                   decoration: BoxDecoration(
+                   border: Border.all(color: Colors.blueAccent)
+                   ),
+
+                  child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
+                    children: [
+                      Flexible(
+                        child: Text(
+                    WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+                  ),
+                      ),
+                  SizedBox(
+              width: 20.0,
+            ),
+            Flexible(
+                        child: NormalMenuButton2()
+                      ),
+                  SizedBox(
+              width: 20.0,
+            ),
+            
+                  Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          changedCalValue + ' kcal'    //서버에서 받은 칼로리 정보 출력
                         ),
                         
                       ],
@@ -174,60 +222,7 @@ class EditDietState extends State<EditDiet> {
                     child: Column(
                       children: [
                         Text(
-                          WriteDietState.cal.toString() + ' kcal'    //서버에서 받은 칼로리 정보 출력
-                        ),
-                        
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-              width: 20.0,
-            ),
-                  Container(
-                    child: IconButton(
-                      onPressed: () {
-                        print("delete diet");                       
-                      },
-                      icon: Icon(Icons.remove_circle, color: Colors.red),
-                                
-                      iconSize: 20.0,
-
-                    ),
-                  ),
-
-                    ],
-                    
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                   padding: const EdgeInsets.all(3.0),
-                   decoration: BoxDecoration(
-                   border: Border.all(color: Colors.blueAccent)
-                   ),
-
-                  child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
-                    children: [
-                      Flexible(
-                        child: Text(
-                    WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
-                  ),
-                      ),
-                  SizedBox(
-              width: 20.0,
-            ),
-            Flexible(
-                        child: NormalMenuButton2()
-                      ),
-                  SizedBox(
-              width: 20.0,
-            ),
-            
-                  Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          WriteDietState.cal.toString() + ' kcal'    //서버에서 받은 칼로리 정보 출력
+                          changedCalValue + ' kcal'    //서버에서 받은 칼로리 정보 출력
                         ),
                         
                       ],
@@ -469,7 +464,7 @@ class EditDietState extends State<EditDiet> {
 
   send4EditDiet() async{   // #5
   print('------------------------------------------------------------');
-  Send5 send5 = new Send5(8, food_list, '2021-08-16', 1);   
+  Send5 send5 = new Send5(3, food_list, '2021-08-16', 1);   
   var DietListJson = send5.toJson();
   print(DietListJson);
 
@@ -514,6 +509,12 @@ class EditDietState extends State<EditDiet> {
       ), (route) => false);
   }
 
+  changeCalValText(){
+    setState(() {
+      Text(WriteDietState.cal.toString() + ' kcal');
+    });
+
+  }
   
 
 

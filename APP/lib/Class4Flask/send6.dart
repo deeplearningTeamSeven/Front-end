@@ -1,18 +1,18 @@
-//#5
+//#6
 
 import 'package:ai_project/Login/kakao_login.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class Send5 {
+class Send6 {
   late int user_id;
   //late List<FoodList> food_list;
   late FoodList food_list;
   late String created_at;
   late int meal;
 
-  Send5(this.user_id, this.food_list, this.created_at, this.meal);
+  Send6(this.user_id, this.food_list, this.created_at, this.meal);
 
-  Send5.fromJson(Map<String, dynamic> json) {
+  Send6.fromJson(Map<String, dynamic> json) {
     user_id = json['user_id'];
     if (json['food_list'] != null) {
       //food_list = new List<FoodList>();

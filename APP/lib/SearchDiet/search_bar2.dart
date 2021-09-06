@@ -13,13 +13,13 @@ import 'package:ai_project/CheckDiet/image_load_button.dart';
 import 'package:ai_project/CheckDiet/edit_diet.dart';
 import 'package:dio/dio.dart';
 
-class ExamplePage extends StatefulWidget {
+class ExamplePage2 extends StatefulWidget {
   // ExamplePage({ Key key }) : super(key: key);
   @override
-  _ExamplePageState createState() => new _ExamplePageState();
+  _ExamplePage2State createState() => new _ExamplePage2State();
 }
 
-class _ExamplePageState extends State<ExamplePage> {
+class _ExamplePage2State extends State<ExamplePage2> {
  // final formKey = new GlobalKey<FormState>();
  // final key = new GlobalKey<ScaffoldState>();
   final TextEditingController _filter = new TextEditingController();
@@ -30,7 +30,7 @@ class _ExamplePageState extends State<ExamplePage> {
   Icon _searchIcon = new Icon(Icons.search);
   Widget _appBarTitle = new Text( 'Search Example' );
 
-  _ExamplePageState() {
+  _ExamplePage2State() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
         setState(() {

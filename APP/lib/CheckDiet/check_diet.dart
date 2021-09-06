@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 import 'menu_button_ui.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,10 +21,14 @@ class CheckDiet extends StatefulWidget {
   CheckDietState createState() => CheckDietState();
 }
 
-class CheckDietState extends State<CheckDiet>
-    with AutomaticKeepAliveClientMixin {   //다른 페이지 갔다 와도 정보가 그대로 저장돼있음
+class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin {   //다른 페이지 갔다 와도 정보가 그대로 저장돼있음
   String _date = "날짜 선택";
   CupertinoTabBar? tabBar;
+
+  var checkDate = DateTime.now(); 
+  static String chosenMealtime = '';
+
+
 
   @override
   bool get wantKeepAlive => true;
@@ -141,213 +146,221 @@ class CheckDietState extends State<CheckDiet>
               width: MediaQuery.of(context).size.width - 20,
               color: Colors.grey[350],
             ),                          //회색 구분 선
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             Expanded(                                  
-                child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                    children: [
+                child: Container(
+        padding: EdgeInsets.all(8.0),
+        child: ListView(
+          children: <Widget>[
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.882,
+              child: FutureBuilder(
+                //future: databaseHelper.getNoteList(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.data == null) {
+                    return Text('Loading');
+                  } else {
+                    if (snapshot.data.length < 1) {
+                      return Center(
+                        child: Text('No Notes, Create New one'),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (BuildContext context, int i) {
+                        return Column(
+                          children: <Widget>[
+                            ListTile(
+                              title: Text(snapshot.data[i].title),
+                              onTap: () {
+                                Route route = MaterialPageRoute(
+                                    builder: (context) => EditDiet2(     //생성된 노트 누르면 editdiet2 페이지로 이동 
+                                          //note: snapshot.data[i],
+                                        ));
+                                Navigator.push(context, route);
+                              },
+                            ),
+                            Divider(color: Theme.of(context).accentColor)
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    //SingleChildScrollView(     //여기서부터 스크롤 기능 시작
+    //             scrollDirection: Axis.vertical,
+    //             child: Column(
+    //               children: List.generate(text.length,(index){
+    //         return Text(text[index].toString());
+    //       }
+    // //                 children: [
                       
-                      Container(                  //앨범에서 가져온 사진 띄워지는 곳, 
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey, width: 1.5),
-                            //borderRadius: const BorderRadius.all(Radius.circular(15)),
-                          ),
-                          margin: EdgeInsets.only(top: 20),
-                          // color: Colors.amber,
-                          width: 350,
-                          height: 510,
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                   '   디폴트날짜       아침      칼로리: 1000kcal'
-                                  ),
-                                  IconButton(
-                                    onPressed: () {          //삭제 버튼 누르면 #9번 호출, userid랑 dietid를 준다
-                                      print("delete diet");  
-                                      send4DeleteDiet();      
-                                      /////// 식단 정보가 지워지면 화면에도 없어지도록 해야함               
-                                    },
-                                  icon: Icon(Icons.remove_circle, color: Colors.red),
-                                  iconSize: 20.0,
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: InkWell(
-                                  onTap: (){     //메인 페이지에서 사진을 누르면 #8호출, editdiet2페이지로 이동
-                                    send4EditDiet2();   // #8 호출
+    // //                   Container(                  //앨범에서 가져온 사진 띄워지는 곳, 
+    // //                       decoration: BoxDecoration(
+    // //                         border: Border.all(color: Colors.grey, width: 1.5),
+    // //                         //borderRadius: const BorderRadius.all(Radius.circular(15)),
+    // //                       ),
+    // //                       margin: EdgeInsets.only(top: 20),
+    // //                       // color: Colors.amber,
+    // //                       width: 350,
+    // //                       height: 510,
+    // //                       child: Column(
+    // //                         children: [
+    // //                           Row(
+    // //                             children: [
+    // //                               Text(
+    // //                                  DateFormat('y-M-d').format(checkDate).toString() +   '  아침 ' +   ' 칼로리: 1000kcal'     // 여기서 칼로리는 음식 각각의 칼로리 합한거...
+    // //                               ),
+    // //                               IconButton(
+    // //                                 onPressed: () {          //삭제 버튼 누르면 #9번 호출, userid랑 dietid를 준다
+    // //                                   print("delete diet");  
+    // //                                   send4DeleteDiet();      
+    // //                                   /////// 식단 정보가 지워지면 화면에도 없어지도록 해야함               
+    // //                                 },
+    // //                               icon: Icon(Icons.remove_circle, color: Colors.red),
+    // //                               iconSize: 20.0,
+    // //                               ),
+    // //                             ],
+    // //                           ),
+    // //                           Padding(
+    // //                             padding: const EdgeInsets.all(8.0),
+    // //                             child: InkWell(
+    // //                               onTap: (){     //메인 페이지에서 사진을 누르면 #8호출, editdiet2페이지로 이동
+    // //                                 chosenMealtime = '아침';
+    // //                                 send4EditDiet2();   // #8 호출
 
-                                    change2EditDiet2();                
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
+    // //                                 change2EditDiet2();                
+    // //                               },
+    // //                               child: ClipRRect(
+    // //                                 borderRadius: BorderRadius.circular(15),
                                     
-                                    child:  Image.file(
+    // //                                 child:  Image.file(
                                       
-                                            WriteDietState.image4checkdiet,                ///////////////////// 널 체크 문제 발생!!!!!!!!!
-                                            fit: BoxFit.fill,
-                                          ),
-                                  ),
-                                ),
-                              ),
+    // //                                         WriteDietState.image4checkdiet1,                ///////////////////// 널 체크 문제 발생!!!!!!!!!
+    // //                                         fit: BoxFit.fill,
+    // //                                       ),
+    // //                               ),
+    // //                             ),
+    // //                           ),
                               
-                            ],
-                          ),
-                        ),
+    // //                         ],
+    // //                       ),
+    // //                     ),
                     
                   
                 
-                      Container(                  //앨범에서 가져온 사진 띄워지는 곳, 
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey, width: 1.5),
-                            //borderRadius: const BorderRadius.all(Radius.circular(15)),
-                          ),
-                          margin: EdgeInsets.only(top: 20),
-                          // color: Colors.amber,
-                          width: 350,
-                          height: 510,
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [     //이미지와 함께 저장돼 있는 날짜, 칼로리 정보 띄워지게 해야함
-                                  Text(
-                                   '   디폴트날짜       점심      칼로리: 1000kcal'
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      print("delete diet");                       
-                                    },
-                                  icon: Icon(Icons.remove_circle, color: Colors.red),
-                                  iconSize: 20.0,
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: InkWell(
-                                  onTap: (){
-                                    change2EditDiet2();
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
+    // //                   Container(                  //앨범에서 가져온 사진 띄워지는 곳, 
+    // //                       decoration: BoxDecoration(
+    // //                         border: Border.all(color: Colors.grey, width: 1.5),
+    // //                         //borderRadius: const BorderRadius.all(Radius.circular(15)),
+    // //                       ),
+    // //                       margin: EdgeInsets.only(top: 20),
+    // //                       // color: Colors.amber,
+    // //                       width: 350,
+    // //                       height: 510,
+    // //                       child: Column(
+    // //                         children: [
+    // //                           Row(
+    // //                             children: [     //이미지와 함께 저장돼 있는 날짜, 칼로리 정보 띄워지게 해야함
+    // //                               Text(
+    // //                                '   디폴트날짜       점심      칼로리: 1000kcal'
+    // //                               ),
+    // //                               IconButton(
+    // //                                 onPressed: () {
+    // //                                   print("delete diet");                       
+    // //                                 },
+    // //                               icon: Icon(Icons.remove_circle, color: Colors.red),
+    // //                               iconSize: 20.0,
+    // //                               ),
+    // //                             ],
+    // //                           ),
+    // //                           Padding(
+    // //                             padding: const EdgeInsets.all(8.0),
+    // //                             child: InkWell(
+    // //                               onTap: (){
+    // //                                 chosenMealtime = '점심';
+    // //                                 send4EditDiet2();   // #8 호출
+    // //                                 change2EditDiet2();
+    // //                               },
+    // //                               child: ClipRRect(
+    // //                                 borderRadius: BorderRadius.circular(15),
                                     
-                                    child:  Image.file(
+    // //                                 child:  Image.file(
                                       
-                                            WriteDietState.image4checkdiet,                ///////////////////// 널 체크 문제 발생!!!!!!!!!
-                                            fit: BoxFit.fill,
-                                          ),
-                                  ),
-                                ),
-                              ),
+    // //                                         WriteDietState.image4checkdiet2,                ///////////////////// 널 체크 문제 발생!!!!!!!!!
+    // //                                         fit: BoxFit.fill,
+    // //                                       ),
+    // //                               ),
+    // //                             ),
+    // //                           ),
                               
-                            ],
-                          ),
-                        ),
+    // //                         ],
+    // //                       ),
+    // //                     ),
 
-                      Container(                  //앨범에서 가져온 사진 띄워지는 곳, 
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey, width: 1.5),
-                            //borderRadius: const BorderRadius.all(Radius.circular(15)),
-                          ),
-                          margin: EdgeInsets.only(top: 20),
-                          // color: Colors.amber,
-                          width: 350,
-                          height: 510,
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                   '   디폴트날짜       저녁      칼로리: 1000kcal'
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      print("delete diet");                       
-                                    },
-                                  icon: Icon(Icons.remove_circle, color: Colors.red),
-                                  iconSize: 20.0,
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: InkWell(
-                                  onTap: (){
-                                    change2EditDiet2();
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
+    // //                   Container(                  //앨범에서 가져온 사진 띄워지는 곳, 
+    // //                       decoration: BoxDecoration(
+    // //                         border: Border.all(color: Colors.grey, width: 1.5),
+    // //                         //borderRadius: const BorderRadius.all(Radius.circular(15)),
+    // //                       ),
+    // //                       margin: EdgeInsets.only(top: 20),
+    // //                       // color: Colors.amber,
+    // //                       width: 350,
+    // //                       height: 510,
+    // //                       child: Column(
+    // //                         children: [
+    // //                           Row(
+    // //                             children: [
+    // //                               Text(
+    // //                                '   디폴트날짜       저녁      칼로리: 1000kcal'
+    // //                               ),
+    // //                               IconButton(
+    // //                                 onPressed: () {
+    // //                                   print("delete diet");                       
+    // //                                 },
+    // //                               icon: Icon(Icons.remove_circle, color: Colors.red),
+    // //                               iconSize: 20.0,
+    // //                               ),
+    // //                             ],
+    // //                           ),
+    // //                           Padding(
+    // //                             padding: const EdgeInsets.all(8.0),
+    // //                             child: InkWell(
+    // //                               onTap: (){
+    // //                                 chosenMealtime = '저녁';
+    // //                                 send4EditDiet2();   // #8 호출
+    // //                                 change2EditDiet2();
+    // //                               },
+    // //                               child: ClipRRect(
+    // //                                 borderRadius: BorderRadius.circular(15),
                                     
-                                    child:  Image.file(
+    // //                                 child:  Image.file(
                                       
-                                            WriteDietState.image4checkdiet,                ///////////////////// 널 체크 문제 발생!!!!!!!!!
-                                            fit: BoxFit.fill,
-                                          ),
-                                  ),
-                                ),
-                              ),
+    // //                                         WriteDietState.image4checkdiet3,                ///////////////////// 널 체크 문제 발생!!!!!!!!!
+    // //                                         fit: BoxFit.fill,
+    // //                                       ),
+    // //                               ),
+    // //                             ),
+    // //                           ),
                               
-                            ],
-                          ),
-                        ),
+    // //                         ],
+    // //                       ),
+    // //                     ),
 
-                        Container(                  //앨범에서 가져온 사진 띄워지는 곳, 
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey, width: 1.5),
-                            //borderRadius: const BorderRadius.all(Radius.circular(15)),
-                          ),
-                          margin: EdgeInsets.only(top: 20),
-                          // color: Colors.amber,
-                          width: 350,
-                          height: 510,
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                   '   디폴트날짜       기타      칼로리: 1000kcal'
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      print("delete diet");                       
-                                    },
-                                  icon: Icon(Icons.remove_circle, color: Colors.red),
-                                  iconSize: 20.0,
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: InkWell(
-                                  onTap: (){
-                                    change2EditDiet2();
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
-                                    
-                                    child:  Image.file(
-                                      
-                                            WriteDietState.image4checkdiet,                ///////////////////// 널 체크 문제 발생!!!!!!!!!
-                                            fit: BoxFit.fill,
-                                          ),
-                                  ),
-                                ),
-                              ),
-                              
-                            ],
-                          ),
-                        ),
+                        
                   
                 
                 
-            ],
-    //      ),
-        ),
-              ),
+    // //         ],
+    // // //      ),
+    //     ),
+    //             ),
+    //           ),
            ),
 
             // Column(

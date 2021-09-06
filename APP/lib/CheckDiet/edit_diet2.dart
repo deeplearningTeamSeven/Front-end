@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:ai_project/MemberInfo/management.dart';
+import 'package:ai_project/SearchDiet/search_bar1.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,7 @@ import 'package:ai_project/sub_main.dart';
 import 'package:ai_project/CheckDiet/check_diet.dart';
 import 'package:ai_project/CheckDiet/image_load_button.dart';
 import 'package:ai_project/CheckDiet/add_diet.dart';
-import 'package:ai_project/SearchDiet/search_bar.dart';
+import 'package:ai_project/SearchDiet/search_bar2.dart';
 import 'package:ai_project/CheckDiet/inboon_button.dart';
 import 'package:http/http.dart' as http;
 
@@ -60,7 +61,8 @@ class _EditDiet2State extends State<EditDiet2> {
                       
                       child:  Image.file(
                         
-                              WriteDietState.image4checkdiet,                ///////////////////// 널 체크 문제 발생!!!!!!!!!
+                        
+                              WriteDietState.image4checkdiet1,              ///////////////////// 널 체크 문제 발생!!!!!!!!!
                               fit: BoxFit.fill,
                             ),
                     ),
@@ -384,7 +386,7 @@ class _EditDiet2State extends State<EditDiet2> {
   change2SearchDiet() {
     Navigator.pushAndRemoveUntil(context,
       MaterialPageRoute(
-          builder: (BuildContext context) => ExamplePage()    
+          builder: (BuildContext context) => ExamplePage2()    
       
       ), (route) => false);
   }
@@ -405,6 +407,15 @@ class _EditDiet2State extends State<EditDiet2> {
   
 
 
+  }
+
+  mealTimeCase(){
+    if(WriteDietState.image4checkdiet1 == null){
+    if(CheckDietState.chosenMealtime == '아침'){
+      WriteDietState.image4checkdiet1;              ///////////////////// 널 체크 문제 발생!!!!!!!!!
+      fit: BoxFit.fill;
+    }
+    }
   }
 
   

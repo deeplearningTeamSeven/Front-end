@@ -137,7 +137,7 @@ class KakaoLoginState extends State<KakaoLogin> {
         context,
         MaterialPageRoute(        
             builder: (context) => InputInfo(
-                  additional_text: '개인 맞춤 서비스를 위해\n신체 정보를 꼭 입력해주세요!',
+                  additional_text: userName +'님! 개인 맞춤 서비스를 위해\n신체 정보를 꼭 입력해주세요!',
                   pressed_save_button: 0,
                 )),
       );

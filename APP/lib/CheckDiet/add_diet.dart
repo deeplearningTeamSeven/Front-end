@@ -24,14 +24,20 @@ class WriteDiet extends StatefulWidget {
 
 class WriteDietState extends State<WriteDiet> {
   List<String> button_value = ["아침", "점심", "저녁"];
-  TextEditingController month_value = TextEditingController();
-  TextEditingController day_value = TextEditingController();
+  TextEditingController month_value = TextEditingController();   //month_value.toString() 으로 나중에 이 정보 불러오기
+  TextEditingController day_value = TextEditingController();     //day_value.toString() 으로 나중에 이 정보 불러오기
   File? new_image; // 다시 선택하기 버튼 누를 때 불러올 이미지 변수
-  static File image4checkdiet = File('file.txt');   //식단조회 페이지로 보낼 이미지 변수   ***null로 만들수 없어서 file.txt넣어둠
+  static File image4checkdiet1 = File('file.txt');   //식단조회 페이지로 보낼 이미지 변수   ***null로 만들수 없어서 file.txt넣어둠      아침용
+  static File image4checkdiet2 = File('file.txt');   //점심용
+  static File image4checkdiet3 = File('file.txt');   //저녁용
+  
 
   static double cal = 31.0;
   static String name = '수박';
   static int amount = 1;
+
+  static String mealTime = '';      
+  
 
   Future pickImage(ImageSource imageSource) async {
     try {
@@ -255,8 +261,12 @@ class WriteDietState extends State<WriteDiet> {
                       isRadio: true,
                       spacing: 10,
                       buttons: button_value,
-                      onSelected: (index, isSelected) => print(
-                          '$index button is selected ' + button_value[index]),
+                      onSelected: (index, isSelected) {
+                        print('$index button is selected ' + button_value[index]);
+                        mealTime = button_value[index];     //식사 시간 정보 저장
+                        print(mealTime);
+
+                      },
                       selectedTextStyle: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
@@ -284,8 +294,8 @@ class WriteDietState extends State<WriteDiet> {
                     //pickImage2(ImageSource.gallery);
                     //print('식단조회 페이지에 등록되는 이미지');
                     //print(new_image);
-                    image4checkdiet= ImageLoadButtonState.image!;
-                    print(image4checkdiet);
+                    image4checkdiet1= ImageLoadButtonState.image!;
+                    print(image4checkdiet1);
                    // send4predict();  // #4
                     /// 음식명, 이름, 칼로리 정보 변수에 저장 후 editDiet 페이지에 출력할 수 있게함
                     
