@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class cameratest extends StatefulWidget {
-  const cameratest({Key? key}) : super(key: key);
+  const cameratest({Key key}) : super(key: key);
 
   @override
   _cameratestState createState() => _cameratestState();
@@ -13,10 +13,10 @@ class cameratest extends StatefulWidget {
 
 class _cameratestState extends State<cameratest> {
   //save the result of gallery file
-  File? galleryFile;
+  File galleryFile;
 
 //save the result of camera file
-  File? cameraFile;
+  File cameraFile;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +26,8 @@ class _cameratestState extends State<cameratest> {
         source: ImageSource.gallery,
         // maxHeight: 50.0,
         // maxWidth: 50.0,
-      )) as File?;
-      print("You selected gallery image : " + galleryFile!.path);
+      )) as File;
+      print("You selected gallery image : " + galleryFile.path);
       setState(() {});
     }
 
@@ -37,8 +37,8 @@ class _cameratestState extends State<cameratest> {
         source: ImageSource.camera,
         //maxHeight: 50.0,
         //maxWidth: 50.0,
-      )) as File?;
-      print("You selected camera image : " + cameraFile!.path);
+      )) as File;
+      print("You selected camera image : " + cameraFile.path);
       setState(() {});
     }
 
@@ -61,7 +61,7 @@ class _cameratestState extends State<cameratest> {
               ),
               galleryFile == null
                   ? Text('no')
-                  : displaySelectedFile(galleryFile!),
+                  : displaySelectedFile(galleryFile),
               // displaySelectedFile(cameraFile!)
             ],
           );

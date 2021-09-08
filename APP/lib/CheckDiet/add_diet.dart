@@ -16,7 +16,7 @@ import 'package:http/http.dart' as http;
 // 식단 추가 작성 페이지 (인공지능에 들어가기 전 페이지)
 class WriteDiet extends StatefulWidget {
   final File food_image;          ////////////
-  const WriteDiet({Key? key, required this.food_image}) : super(key: key);         //////////////
+  const WriteDiet({Key key, this.food_image}) : super(key: key);         //////////////
 
   @override
   WriteDietState createState() => WriteDietState();
@@ -24,25 +24,27 @@ class WriteDiet extends StatefulWidget {
 
 class WriteDietState extends State<WriteDiet> {
   List<String> button_value = ["아침", "점심", "저녁"];
-  TextEditingController month_value = TextEditingController();   //month_value.toString() 으로 나중에 이 정보 불러오기
-  TextEditingController day_value = TextEditingController();     //day_value.toString() 으로 나중에 이 정보 불러오기
-  File? new_image; // 다시 선택하기 버튼 누를 때 불러올 이미지 변수
-  static File image4checkdiet1 = File('file.txt');   //식단조회 페이지로 보낼 이미지 변수   ***null로 만들수 없어서 file.txt넣어둠      아침용
-  static File image4checkdiet2 = File('file.txt');   //점심용
-  static File image4checkdiet3 = File('file.txt');   //저녁용
+  static TextEditingController month_value = TextEditingController();   //month_value.toString() 으로 나중에 이 정보 불러오기
+  static TextEditingController day_value = TextEditingController();     //day_value.toString() 으로 나중에 이 정보 불러오기
+  File new_image; // 다시 선택하기 버튼 누를 때 불러올 이미지 변수
+  static File image4checkdiet;  //식단조회 페이지로 보낼 이미지 변수   ***null로 만들수 없어서 file.txt넣어둠   
+
   
 
   static double cal = 31.0;
-  static String name = '수박';
+  //static String name = '수박';
   static int amount = 1;
 
-  static String mealTime = '';      
+  static String mealTime = '';  
+  static int mealTimeVal;    
+
+  static String imageFile = '';
   
 
   Future pickImage(ImageSource imageSource) async {
     try {
-      PickedFile? f = await ImagePicker.platform.pickImage(source: imageSource);
-      File img_file = File(f!.path);
+      PickedFile f = await ImagePicker.platform.pickImage(source: imageSource);
+      File img_file = File(f.path);
       print(img_file);
       setState(() => new_image = img_file);
     } on PlatformException catch (e) {
@@ -103,7 +105,7 @@ class WriteDietState extends State<WriteDiet> {
                     borderRadius: BorderRadius.circular(15),
                     child: new_image != null
                         ? Image.file(
-                            new_image!,
+                            new_image,
                             fit: BoxFit.fill,
                           )
                         : Image.file(
@@ -291,11 +293,12 @@ class WriteDietState extends State<WriteDiet> {
                   ),
                   onPressed: () {                                    //등록 버튼 눌렀을 때 날짜랑 식사시간 저장한 상태에서 #4번 호출 /predict로 이미지 file AI모델에 전달
                     print('등록버튼 pressed');
+                    //transferMealTime();
                     //pickImage2(ImageSource.gallery);
                     //print('식단조회 페이지에 등록되는 이미지');
                     //print(new_image);
-                    image4checkdiet1= ImageLoadButtonState.image!;
-                    print(image4checkdiet1);
+                    image4checkdiet= ImageLoadButtonState.image;
+                    print(image4checkdiet.toString());
                    // send4predict();  // #4
                     /// 음식명, 이름, 칼로리 정보 변수에 저장 후 editDiet 페이지에 출력할 수 있게함
                     
@@ -351,6 +354,15 @@ class WriteDietState extends State<WriteDiet> {
   //   amount = userMap['food']['amount'].toString();
 
   // }
+  transferMealTime(){
+    if(mealTime == '아침'){
+      mealTimeVal = 1;
+    }else if(mealTime == '점심'){
+      mealTimeVal = 2;
+    }else if(mealTime == '저녁'){
+      mealTimeVal = 3;
+    }
+  }
   
 
 

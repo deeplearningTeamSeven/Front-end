@@ -4,11 +4,11 @@ import 'package:ai_project/Login/kakao_login.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Send6 {
-  late int user_id;
+   int user_id;
   //late List<FoodList> food_list;
-  late FoodList food_list;
-  late String created_at;
-  late int meal;
+   FoodList food_list;
+   String created_at;
+   int meal;
 
   Send6(this.user_id, this.food_list, this.created_at, this.meal);
 
@@ -37,9 +37,9 @@ class Send6 {
 }
 
 class FoodList {
-  late int no;
-  late String name;
-  late int amount;
+   int no;
+   String name;
+   int amount;
 
   FoodList(this.no,  this.name,  this.amount);
 

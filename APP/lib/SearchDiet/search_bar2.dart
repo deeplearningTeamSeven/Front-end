@@ -143,11 +143,7 @@ class _ExamplePage2State extends State<ExamplePage2> {
   }
 
   change2EditDiet2() {
-    Navigator.pushAndRemoveUntil(context,
-      MaterialPageRoute(
-          builder: (BuildContext context) => EditDiet2()    
-      
-      ), (route) => false);
+    Navigator.pop(context);
   }
 
 

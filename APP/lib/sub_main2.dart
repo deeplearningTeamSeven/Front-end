@@ -17,7 +17,7 @@ class SubMain2 extends StatefulWidget {
 }
 
 class _SubMain2 extends State<SubMain2> with TickerProviderStateMixin {
-  TabController? _tabController;
+  TabController _tabController;
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _SubMain2 extends State<SubMain2> with TickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
-    _tabController!.dispose();
+    _tabController.dispose();
   }
 
   @override
@@ -64,7 +64,7 @@ class _SubMain2 extends State<SubMain2> with TickerProviderStateMixin {
         tabBarColor: Colors.grey[300],
         onTabItemSelected: (int value) {
           setState(() {
-            _tabController!.index = value;
+            _tabController.index = value;
           });
         },
       ),

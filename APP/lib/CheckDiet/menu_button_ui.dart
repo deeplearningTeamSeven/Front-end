@@ -4,7 +4,7 @@ import 'package:menu_button/menu_button.dart';
 // 조회페이지에서 선택할 식사 시간 메뉴 버튼 UI
 class NormalMenuButton extends StatefulWidget {
   const NormalMenuButton({
-    Key? key,
+    Key key,
   }) : super(key: key);
 
   @override
@@ -12,9 +12,9 @@ class NormalMenuButton extends StatefulWidget {
 }
 
 class _NormalMenuButtonState extends State<NormalMenuButton> {
-  late BoxDecoration decoration;
+   BoxDecoration decoration;
 
-  late String selectedKey;
+   String selectedKey;
 
   List<String> keys = <String>['아침', '점심', '저녁', '전체'];
 

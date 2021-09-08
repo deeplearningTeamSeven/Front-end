@@ -5,7 +5,7 @@ import 'package:ai_project/main.dart';
 
 class Login extends StatelessWidget {
   static final storage = FlutterSecureStorage();
-  const Login({Key? key}) : super(key: key);
+  const Login({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

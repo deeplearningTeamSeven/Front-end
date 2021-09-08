@@ -18,9 +18,9 @@ class InputInfo extends StatefulWidget {
   String additional_text;
   int pressed_save_button;
   InputInfo(
-      {Key? key,
-      required this.additional_text,
-      required this.pressed_save_button})
+      {Key key,
+       this.additional_text,
+       this.pressed_save_button})
       : super(key: key);
 
   @override
@@ -43,11 +43,11 @@ class _InputInfoState extends State<InputInfo> {
   int gender_current_seg = 0;
   int activity_index_current_seg = 0;
   //String userId = '1';
-  int meal = 4;
+  int meal = 4;  //아침점심저녁 전부 출력하도록
   var created_at= DateTime.now();           
   //
-  late int gender;
-  late int activity;
+   int gender;
+   int activity;
 
 
   // 사용가자 입력한 값 가져오기 위한 컨트롤러
@@ -211,7 +211,7 @@ class _InputInfoState extends State<InputInfo> {
                                     children: gender_segments,
                                     onValueChanged: (i) {
                                       setState(() {
-                                        gender_current_seg = i!;
+                                        gender_current_seg = i;
                                       });
                                     }),
                               ),
@@ -237,7 +237,7 @@ class _InputInfoState extends State<InputInfo> {
                                     children: activity_index_segments,
                                     onValueChanged: (i) {
                                       setState(() {
-                                        activity_index_current_seg = i!;
+                                        activity_index_current_seg = i;
                                       });
                                     }),
                               ),
@@ -316,7 +316,7 @@ class _InputInfoState extends State<InputInfo> {
     print(userInfoJson);
     print(json.encode(userInfoJson));
 
-    final url = 'http://3.38.106.149/users/';
+    final url = 'http://52.78.217.231/users/';
     print(Uri.parse(url));
 
     print(url);
@@ -347,7 +347,7 @@ class _InputInfoState extends State<InputInfo> {
   print(DietListJson);
   print(json.encode(DietListJson));
 
-  final url = 'http://3.38.106.149/diets/list';
+  final url = 'http://52.78.217.231/diets/list';
   print(Uri.parse(url));
 
   print(url);

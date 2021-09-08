@@ -23,7 +23,7 @@ class SubMain extends StatefulWidget {
 }
 
 class _SubMain extends State<SubMain> with TickerProviderStateMixin {
-  TabController? _tabController;
+  TabController _tabController;
   
 
   @override
@@ -39,7 +39,7 @@ class _SubMain extends State<SubMain> with TickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
-    _tabController!.dispose();
+    _tabController.dispose();
   }
 
   @override
@@ -72,20 +72,20 @@ class _SubMain extends State<SubMain> with TickerProviderStateMixin {
         onTabItemSelected: (int value) {     //추천 눌렀을 때 #11 호출,   식단통계 누르면 (시작 날짜: 현재 날짜, 끝날짜 : 현재 날짜로 해서 #10 호출),
         if(value==0){
           setState(() {                       
-            _tabController!.index = value;    //누른 페이지로 이동
+            _tabController.index = value;    //누른 페이지로 이동
           });
 
         }
           else if(value==1){
             receive4DietRecommend();   // #11
             setState(() {                       
-            _tabController!.index = value;    //누른 페이지로 이동
+            _tabController.index = value;    //누른 페이지로 이동
           });
           }else if(value==2){  //  #10
             //send4DietGraph();
             ///////// #10 호출하고 받은 데이터 변수에 저장해야함. 그리고 통계 페이지에서 활용해야함
             setState(() {                       
-            _tabController!.index = value;    //누른 페이지로 이동
+            _tabController.index = value;    //누른 페이지로 이동
           });
 
           }
@@ -110,7 +110,7 @@ class _SubMain extends State<SubMain> with TickerProviderStateMixin {
 
   receive4DietRecommend() async{   //#11
     
-    final url = 'http://3.38.106.149/diet/recommend?user_id=i';
+    final url = 'http://52.78.217.231/diet/recommend?user_id=i';
     print(Uri.parse(url));
 
     print(url);

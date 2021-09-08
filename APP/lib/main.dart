@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:ai_project/CheckDiet/check_diet.dart';
+import 'package:ai_project/DataBase1/db2.dart';
 import 'package:ai_project/camera_test.dart';
 import 'package:ai_project/sub_main.dart';
 import 'package:flutter/cupertino.dart';  
@@ -19,7 +20,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -37,19 +38,22 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget {
-  const MainPage({Key? key}) : super(key: key);
+  const MainPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    //deleteDB();                               ///////////////////////////////////////////////////////////////db 삭제
     //return Login();
-    return const StartPage();
-    //return SubMain();
+    //return const StartPage();
+    return SubMain();
     // return ctest();
   }
+
+
 }
 
 class StartPage extends StatefulWidget {
-  const StartPage({Key? key}) : super(key: key);
+  const StartPage({Key key}) : super(key: key);
 
   @override
   State<StartPage> createState() => _StartPageState();
@@ -62,7 +66,7 @@ class _StartPageState extends State<StartPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       loadUserLogin();
     });
     Timer(
@@ -74,10 +78,12 @@ class _StartPageState extends State<StartPage> {
     );
   }
 
+  
+
   // 기기에 저장된 로그인 정보 불러오기
   loadUserLogin() async {
     // login key값에 저장된 값 불러오기
-    userInfo = (await storage.read(key: 'login'))!;       //자꾸 null check 뭐시기 에러 발생, 디버그 없이 실행하면 됨
+    userInfo = (await storage.read(key: 'login'));       //자꾸 null check 뭐시기 에러 발생, 디버그 없이 실행하면 됨
     print(userInfo);
 
     // 로그인한 값이 저장됐으면 SubMain 페이지로 이동

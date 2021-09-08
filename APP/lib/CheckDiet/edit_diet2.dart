@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ai_project/CheckDiet/edit_diet.dart';
 import 'package:ai_project/MemberInfo/management.dart';
 import 'package:ai_project/SearchDiet/search_bar1.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,13 +16,27 @@ import 'package:ai_project/CheckDiet/inboon_button.dart';
 import 'package:http/http.dart' as http;
 
 class EditDiet2 extends StatefulWidget {
-  const EditDiet2({ Key? key }) : super(key: key);
+  const EditDiet2({ Key key, this.id, this.imageFile }) : super(key: key);
+
+  final String id;
+  final String imageFile;
+  //findDiet(id)[0]
 
   @override
-  _EditDiet2State createState() => _EditDiet2State();
+  EditDiet2State createState() => EditDiet2State();
 }
 
-class _EditDiet2State extends State<EditDiet2> {
+class EditDiet2State extends State<EditDiet2> {
+  @override
+  initState() {
+  // 부모의 initState호출
+  super.initState();
+  // 이 클래스애 리스너 추가
+  imageFileSave();
+}
+  
+  String FinalImageFile;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,8 +76,8 @@ class _EditDiet2State extends State<EditDiet2> {
                       
                       child:  Image.file(
                         
-                        
-                              WriteDietState.image4checkdiet1,              ///////////////////// 널 체크 문제 발생!!!!!!!!!
+                              File(FinalImageFile),             /////////////////////////// 문제 ///////////////////////////////////
+                                        
                               fit: BoxFit.fill,
                             ),
                     ),
@@ -89,7 +104,47 @@ class _EditDiet2State extends State<EditDiet2> {
                     children: [
                       Flexible(
                         child: Text(
-                    '불고기fgagfadgadfgadg'
+                    '미역국'
+                  ),
+                      ),
+                  SizedBox(
+              width: 40.0,
+            ),
+            Flexible(
+                        child: NormalMenuButton2()
+                      ),
+                  SizedBox(
+              width: 20.0,
+            ),
+            
+                  Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          '칼로리: 100kcal'
+                        ),
+                        
+                      ],
+                    ),
+                  ),
+                  
+
+                    ],
+                    
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.all(15.0),
+                   padding: const EdgeInsets.all(3.0),
+                   decoration: BoxDecoration(
+                   border: Border.all(color: Colors.blueAccent)
+                   ),
+
+                  child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
+                    children: [
+                      Flexible(
+                        child: Text(
+                    '불고기'
                   ),
                       ),
                   SizedBox(
@@ -129,7 +184,7 @@ class _EditDiet2State extends State<EditDiet2> {
                     children: [
                       Flexible(
                         child: Text(
-                    '불고기fgagfadgadfgadg'
+                    '흰쌀밥 '
                   ),
                       ),
                   SizedBox(
@@ -146,7 +201,7 @@ class _EditDiet2State extends State<EditDiet2> {
                     child: Column(
                       children: [
                         Text(
-                          '칼로리: 1000kcal'
+                          '칼로리: 200kcal'
                         ),
                         
                       ],
@@ -169,7 +224,7 @@ class _EditDiet2State extends State<EditDiet2> {
                     children: [
                       Flexible(
                         child: Text(
-                    '불고기fgagfadgadfgadg'
+                    '미역국'
                   ),
                       ),
                   SizedBox(
@@ -186,7 +241,7 @@ class _EditDiet2State extends State<EditDiet2> {
                     child: Column(
                       children: [
                         Text(
-                          '칼로리: 1000kcal'
+                          '칼로리: 300kcal'
                         ),
                         
                       ],
@@ -209,7 +264,7 @@ class _EditDiet2State extends State<EditDiet2> {
                     children: [
                       Flexible(
                         child: Text(
-                    '불고기fgagfadgadfgadg'
+                    '파김치'
                   ),
                       ),
                   SizedBox(
@@ -226,47 +281,7 @@ class _EditDiet2State extends State<EditDiet2> {
                     child: Column(
                       children: [
                         Text(
-                          '칼로리: 1000kcal'
-                        ),
-                        
-                      ],
-                    ),
-                  ),
-                  
-
-                    ],
-                    
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                   padding: const EdgeInsets.all(3.0),
-                   decoration: BoxDecoration(
-                   border: Border.all(color: Colors.blueAccent)
-                   ),
-
-                  child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
-                    children: [
-                      Flexible(
-                        child: Text(
-                    '불고기fgagfadgadfgadg'
-                  ),
-                      ),
-                  SizedBox(
-              width: 40.0,
-            ),
-            Flexible(
-                        child: NormalMenuButton2()
-                      ),
-                  SizedBox(
-              width: 20.0,
-            ),
-            
-                  Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          '칼로리: 1000kcal'
+                          '칼로리: 100kcal'
                         ),
                         
                       ],
@@ -307,6 +322,7 @@ class _EditDiet2State extends State<EditDiet2> {
                                 ),
                                 onPressed: () {   //수정 버튼 눌렀을 때 #6호출 후 메인 페이지 이동 
                                   print('수정버튼 pressed');
+                                  print(widget.imageFile);
                                   //pickImage2(ImageSource.gallery);
                                   //print('식단조회 페이지에 등록되는 이미지');
                                   //print(new_image);
@@ -392,7 +408,7 @@ class _EditDiet2State extends State<EditDiet2> {
   }
 
   send4DietSearch() async{
-    final url = 'http://3.38.106.149/diets/search?food_name=i';
+    final url = 'http://52.78.217.231/diets/search?food_name=i';
     print(Uri.parse(url));
 
     print(url);
@@ -410,12 +426,23 @@ class _EditDiet2State extends State<EditDiet2> {
   }
 
   mealTimeCase(){
-    if(WriteDietState.image4checkdiet1 == null){
+    if(WriteDietState.image4checkdiet == null){
     if(CheckDietState.chosenMealtime == '아침'){
-      WriteDietState.image4checkdiet1;              ///////////////////// 널 체크 문제 발생!!!!!!!!!
+      WriteDietState.image4checkdiet;              ///////////////////// 널 체크 문제 발생!!!!!!!!!
       fit: BoxFit.fill;
     }
     }
+  }
+
+  imageFileSave(){
+    print('EditDiet2 page entered');
+    print('# '+ widget.imageFile + ' #');
+    print(File(widget.imageFile));
+    FinalImageFile = widget.imageFile;
+    //FinalImageFile = FinalImageFile.substring(7,FinalImageFile.length-1);
+    print(FinalImageFile);
+    
+
   }
 
   

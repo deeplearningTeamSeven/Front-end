@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:ai_project/Class4Flask/send5.dart';
+import 'package:ai_project/DataBase1/db2.dart';
 import 'package:ai_project/Login/kakao_login.dart';
 import 'package:ai_project/MemberInfo/management.dart';
 import 'package:ai_project/SearchDiet/search_bar1.dart';
@@ -18,9 +20,16 @@ import 'package:ai_project/CheckDiet/edit_diet2.dart';
 import 'package:ai_project/CheckDiet/inboon_button.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:ai_project/DataBase1/user_diet.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:crypto/crypto.dart';
 
 class EditDiet extends StatefulWidget {
-  const EditDiet({ Key? key }) : super(key: key);
+  //const EditDiet({ Key key }) : super(key: key);
+  //final UserDiet diet;
+  //EditDiet({this.diet});
+  //AddNote({this.note});
+  
 
   @override
   EditDietState createState() => EditDietState();
@@ -28,10 +37,18 @@ class EditDiet extends StatefulWidget {
 
 class EditDietState extends State<EditDiet> {
   static const storage = FlutterSecureStorage();
+
+  String mealTime = '';
+  String mealDate = '2021-09-08';
+  File imageFile;
+  int cal = 1000;
+
   static String diet_id = "";
   FoodList food_list = FoodList(323,  '사과',  1);              
 
   static String changedCalValue = WriteDietState.cal.toString(); 
+
+  final DBHelper2 helper = DBHelper2();
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +89,8 @@ class EditDietState extends State<EditDiet> {
                       
                       child:  Image.file(
                         
-                              WriteDietState.image4checkdiet1,                ///////////////////// 널 체크 문제 발생!!!!!!!!!
+                            
+                              WriteDietState.image4checkdiet,                ///////////////////// 널 체크 문제 발생!!!!!!!!!
                               fit: BoxFit.fill,
                             ),
                     ),
@@ -99,17 +117,18 @@ class EditDietState extends State<EditDiet> {
                     children: [
                       Flexible(
                         child: Text(
-                    WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+                    //WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+                    '피자'
                   ),
                       ),
                   SizedBox(
-              width: 20.0,
+              width: 50.0,
             ),
             Flexible(
                         child: NormalMenuButton2()
                       ),
                   SizedBox(
-              width: 20.0,
+              width: 50.0,
             ),
             
                   Container(
@@ -152,7 +171,8 @@ class EditDietState extends State<EditDiet> {
                     children: [
                       Flexible(
                         child: Text(
-                    WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+                    //WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+                    '사과주스'
                   ),
                       ),
                   SizedBox(
@@ -205,7 +225,8 @@ class EditDietState extends State<EditDiet> {
                     children: [
                       Flexible(
                         child: Text(
-                    WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+                    //WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+                    '스파게티'
                   ),
                       ),
                   SizedBox(
@@ -258,17 +279,18 @@ class EditDietState extends State<EditDiet> {
                     children: [
                       Flexible(
                         child: Text(
-                    WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+                    //WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+                    '피클'
                   ),
                       ),
                   SizedBox(
-              width: 20.0,
+              width: 50.0,
             ),
             Flexible(
                         child: NormalMenuButton2()
                       ),
                   SizedBox(
-              width: 20.0,
+              width: 50.0,
             ),
             
                   Container(
@@ -311,7 +333,8 @@ class EditDietState extends State<EditDiet> {
                     children: [
                       Flexible(
                         child: Text(
-                    WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+                    //WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+                    '감자튀김'
                   ),
                       ),
                   SizedBox(
@@ -382,6 +405,7 @@ class EditDietState extends State<EditDiet> {
                                 ),
                                 onPressed: () {   //완료 버튼 눌렀을 때   #5번 호출, 메인 페이지로 이동
                                   print('완료버튼 pressed');
+                                  imageFileSave();
                                   //pickImage2(ImageSource.gallery);
                                   //print('식단조회 페이지에 등록되는 이미지');
                                   //print(new_image);
@@ -389,6 +413,7 @@ class EditDietState extends State<EditDiet> {
                                   //print(image4checkdiet);
                                   send4EditDiet();    // #5 호출하고
                                   //// diet_id 받아서 저장
+                                  saveDB();
 
                                   change2MainPage();     //메인 화면으로 이동
 
@@ -454,6 +479,36 @@ class EditDietState extends State<EditDiet> {
     );
   }
 
+  Future<void> saveDB() async{
+    transferMealTime();
+    imageFileSave();
+    //idDetection();
+
+    DBHelper2 sd = DBHelper2();
+
+    var fido = UserDiet(                    /////////////////////////////////////////////////////////////////////   id  
+      id: Str2sha512(DateTime.now().toString()), 
+      mealTime: this.mealTime, 
+      mealDate: this.mealDate,
+      imageFile: this.imageFile.path,
+      cal: this.cal,
+    
+    );
+    print('hi');
+
+    await sd.insertDiet(fido);
+    print(await sd.diets());
+     
+      // widget.diet.mealTime = WriteDietState.mealTime;
+      // widget.diet.mealDate = '2021-09-07';
+      // helper.updateDiet(widget.diet);
+    
+    // Navigator.pushAndRemoveUntil(context,
+    //   MaterialPageRoute(
+    //       builder: (BuildContext context) => SubMain()  
+    //       ), (route) => false);
+  }
+
   change2MainPage() {
     Navigator.pushAndRemoveUntil(context,
       MaterialPageRoute(
@@ -463,12 +518,21 @@ class EditDietState extends State<EditDiet> {
   }
 
   send4EditDiet() async{   // #5
-  print('------------------------------------------------------------');
-  Send5 send5 = new Send5(3, food_list, '2021-08-16', 1);   
+  print('------------------------------------------------------------#5');
+  List<FoodList> food_list=[];
+  food_list.add(FoodList(246,'쌀밥',1));
+  food_list.add(FoodList(345,"미역국",1));
+  var prefs=await SharedPreferences.getInstance();
+  final user_id = prefs.getInt('user_id') ?? 0;
+  //String created_at="2021-"+WriteDietState.month_value.toString()+"-"+WriteDietState.day_value.toString();
+  String created_at = "2021-09-03";
+  print(created_at);
+  Send5 send5 = new Send5(user_id, food_list,created_at, 3);   //1은 아침   
   var DietListJson = send5.toJson();
   print(DietListJson);
+  print(json.encode(DietListJson));
 
-  final url = 'http://3.38.106.149/diets/';
+  final url = 'http://52.78.217.231/diets/';
   print(Uri.parse(url));
 
   print(url);
@@ -479,6 +543,7 @@ class EditDietState extends State<EditDiet> {
   print(response);
   print(response.body);
   print('hello3');
+  print(response.statusCode);
 
   if (response.statusCode==200){
         Map userMap=jsonDecode(response.body);    //response를 디코딩해서 변수에 저장
@@ -490,7 +555,10 @@ class EditDietState extends State<EditDiet> {
   }
 
   send4DietSearch() async{   // #13
-    final url = 'http://3.38.106.149/diets/search?food_name=i';
+    var queryParams=json.encode({
+      'food_name':"떡볶이"
+    });
+    final url = 'http://52.78.217.231/diets/search?food_name=$queryParams';
     print(Uri.parse(url));
 
     print(url);
@@ -515,6 +583,35 @@ class EditDietState extends State<EditDiet> {
     });
 
   }
+
+  transferMealTime(){
+    if(WriteDietState.mealTime == '아침'){
+      mealTime = '아침';
+    }else if(WriteDietState.mealTime == '점심'){
+      mealTime = '점심';
+    }else if(WriteDietState.mealTime == '저녁'){
+      mealTime = '저녁';
+    }
+  }
+
+  imageFileSave(){
+    imageFile = WriteDietState.image4checkdiet;
+  }
+
+ 
+
+
+
+  String Str2sha512(String text) {
+  var bytes = utf8.encode(text); // data being hashed
+
+  var digest = sha512.convert(bytes);
+
+  return digest.toString();
+
+
+}
+
   
 
 

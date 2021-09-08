@@ -11,18 +11,19 @@ import 'package:ai_project/Class4Flask/userDto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class KakaoLogin extends StatefulWidget {    //로그인 기능 & ui
-  const KakaoLogin({Key? key}) : super(key: key);
+  const KakaoLogin({Key key}) : super(key: key);
 
   @override
   KakaoLoginState createState() => KakaoLoginState();
 }
 
 class KakaoLoginState extends State<KakaoLogin> {
+  SharedPreferences prefs;
   static final storage = new FlutterSecureStorage();
-
+  
   static String userName = "";
   static String userEmail = "";
-  late int user_id;             ///
+  int user_id;             ///
 
   @override
   void initState() {
@@ -61,20 +62,25 @@ class KakaoLoginState extends State<KakaoLogin> {
       print(e);
     }
   }
-  late String name;
+   String name;
   _getUserId() async {
+    prefs=await SharedPreferences.getInstance();
     User user = await UserApi.instance.me();
     setState(() {
       name = user.kakaoAccount?.profile?.toJson()['nickname'];
+      prefs.setString('userName',name);
     });
     print('이름: '+ name);
     return name;
   }
 
   _getUserEmail() async {
+    prefs=await SharedPreferences.getInstance();
     User user = await UserApi.instance.me();
-    print('이메일 주소: ' + user.kakaoAccount!.email.toString());
-    return user.kakaoAccount!.email.toString();
+    print('이메일 주소: ' + user.kakaoAccount.email.toString());
+    String email=user.kakaoAccount.email.toString();
+    prefs.setString('email',email);
+    return user.kakaoAccount.email.toString();
   }
 
   _getUserInfo() async {
@@ -93,14 +99,14 @@ class KakaoLoginState extends State<KakaoLogin> {
   _issueAccessToken(String authCode) async {
     try {
       var token = await AuthApi.instance.issueAccessToken(authCode);
-      //var email = 
+      
       AccessTokenStore.instance.toStore(token);
       //print(token.toString());
       await _getUserInfo();
       var userName = await _getUserId();
       var userEmail = await _getUserEmail();
-      await storage.write(key: 'userName', value: userName); 
-      await storage.write(key: 'email', value: userEmail);
+      // await storage.write(key: 'userName', value: userName); 
+      // await storage.write(key: 'email', value: userEmail);
       
       
       
@@ -115,7 +121,7 @@ class KakaoLoginState extends State<KakaoLogin> {
       //post request
 
       //url to send the post request to 
-      final url = 'http://3.38.106.149/login/';
+      final url = 'http://52.78.217.231/login/';
       print(Uri.parse(url));
       
       print(url);
@@ -130,7 +136,8 @@ class KakaoLoginState extends State<KakaoLogin> {
         print(userMap);
         user_id = userMap['user_id'];   
         //SharedPreferences prefs = await SharedPreferences.getInstance();
-        //prefs.setInt('user_id');
+        prefs.setInt('user_id',user_id);
+
         await storage.write(key: 'userid', value: user_id.toString());   //user_id 기기에 저장         
 
         Navigator.pushReplacement(

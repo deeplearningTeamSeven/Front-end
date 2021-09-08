@@ -21,7 +21,7 @@ import 'package:ai_project/sub_main2.dart';
 
 
 class CalendarPage extends StatefulWidget {
-  const CalendarPage({ Key? key }) : super(key: key);
+  const CalendarPage({ Key key }) : super(key: key);
 
   @override
   CalendarPageState createState() => CalendarPageState();
@@ -85,7 +85,7 @@ void showAlertDialog(BuildContext context) async {
   
   //static List<DateTime> days = [];
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
-    SchedulerBinding.instance!.addPostFrameCallback((duration) {
+    SchedulerBinding.instance.addPostFrameCallback((duration) {
       setState(() {
         if (args.value.endDate==null){  //첫번째 날짜 눌렀을때
 

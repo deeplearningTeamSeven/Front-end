@@ -20,7 +20,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 
 class DietGraph extends StatefulWidget {
-  const DietGraph({ Key? key }) : super(key: key);
+  const DietGraph({ Key key }) : super(key: key);
 
   @override
   GraphState createState() => GraphState();
@@ -34,7 +34,7 @@ class GraphState extends State<DietGraph> {
 
   //칼로리 그래프(칼로리만 표시)
   static List<charts.Series<MyNutrition, String>> seriesList = [];
-  late List<MyNutrition> CalData = [];
+   List<MyNutrition> CalData = [];
   List<charts.Series<MyNutrition, String>> _createRandomData() {
    final random = Random();
 
@@ -84,9 +84,9 @@ class GraphState extends State<DietGraph> {
   
   //탄단지 그래프(탄단지 정보 표시)
   static List<charts.Series<MyNutrition, String>> seriesList2 = [];
-  late List<MyNutrition> TanData = [];
-  late List<MyNutrition> DanData = [];
-  late List<MyNutrition> JiData = [];
+   List<MyNutrition> TanData = [];
+   List<MyNutrition> DanData = [];
+   List<MyNutrition> JiData = [];
 
   List<charts.Series<MyNutrition, String>> _createRandomData2() {
    final random = Random();

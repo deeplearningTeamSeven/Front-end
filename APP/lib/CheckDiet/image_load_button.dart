@@ -7,7 +7,7 @@ import 'add_diet.dart';
 import 'package:ai_project/CheckDiet/add_diet.dart';
 
 class ImageLoadButton extends StatefulWidget {   //카메라 기능이 있는 파일
-  const ImageLoadButton({Key? key}) : super(key: key);
+  const ImageLoadButton({Key key}) : super(key: key);
 
   @override
   ImageLoadButtonState createState() => ImageLoadButtonState();
@@ -25,12 +25,12 @@ class ImageLoadButtonState extends State<ImageLoadButton> {
   var isDialOpen = ValueNotifier<bool>(false);
   var speedDialDirection = SpeedDialDirection.Up;
   var selectedfABLocation = FloatingActionButtonLocation.endFloat;
-  static File? image;
+  static File image;
 
   Future pickImage(ImageSource imageSource) async {
     try {
-      PickedFile? f = await ImagePicker.platform.pickImage(source: imageSource);
-      File img_file = File(f!.path);
+      PickedFile f = await ImagePicker.platform.pickImage(source: imageSource);
+      File img_file = File(f.path);
       print(img_file);
       setState(() => image = img_file);
       print('이미지 선택 완료');
@@ -116,7 +116,7 @@ class ImageLoadButtonState extends State<ImageLoadButton> {
       context,
       MaterialPageRoute(
           builder: (context) => WriteDiet(    //이미지가 선택됐을때 이동
-                food_image: image!,
+                food_image: image,
               )),
     );
   }

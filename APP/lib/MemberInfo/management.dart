@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 // 회원 정보 페이지 UI와 기능
 class Management extends StatefulWidget {
-  const Management({Key? key}) : super(key: key);
+  const Management({Key key}) : super(key: key);
 
   @override
   _ManagementState createState() => _ManagementState();
@@ -119,7 +119,7 @@ class _ManagementState extends State<Management> {
   }
 
   send4UserDelete() async{   // #3 호출
-    final url = 'http://3.38.106.149/users/account?user_id=i';
+    final url = 'http://52.78.217.231/users/account?user_id=i';
     print(Uri.parse(url));
 
     print(url);

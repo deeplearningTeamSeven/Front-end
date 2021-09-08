@@ -1,8 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ai_project/CheckDiet/add_diet.dart';
+import 'package:ai_project/CheckDiet/edit_diet.dart';
 import 'package:ai_project/CheckDiet/edit_diet2.dart';
 import 'package:ai_project/CheckDiet/image_load_button.dart';
+import 'package:ai_project/DataBase1/db2.dart';
+import 'package:ai_project/DataBase1/user_diet.dart';
 import 'package:ai_project/Class4Flask/dietListDto.dart';
 import 'package:ai_project/Login/kakao_login.dart';
 import 'package:ai_project/MemberInfo/management.dart';
@@ -13,22 +17,30 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'menu_button_ui.dart';
 import 'package:http/http.dart' as http;
+import 'package:ai_project/DataBase1/user_diet.dart';
 
 // 조회 페이지 UI
 class CheckDiet extends StatefulWidget {
-  const CheckDiet({Key? key}) : super(key: key);
+  const CheckDiet({Key key}) : super(key: key);
   @override
   CheckDietState createState() => CheckDietState();
 }
 
 class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin {   //다른 페이지 갔다 와도 정보가 그대로 저장돼있음
   String _date = "날짜 선택";
-  CupertinoTabBar? tabBar;
+  CupertinoTabBar tabBar;
+
+  String month;
+  String day;
+
+  String deleteId;
+
+  
 
   var checkDate = DateTime.now(); 
   static String chosenMealtime = '';
 
-
+  final DBHelper2 dbHelper = DBHelper2();
 
   @override
   bool get wantKeepAlive => true;
@@ -40,6 +52,7 @@ class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin
 
   @override
   Widget build(BuildContext context) {
+    //dbHelper.initlizeDatabase();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -122,6 +135,7 @@ class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin
                         ),
                         onPressed: () {  //정보들 입력하고 조회버튼 누르면, #7 호출 후 다시 업데이트된 메인 화면으로
                           //sendMainPage();
+                        
 
                           Navigator.pushAndRemoveUntil(context,
                             MaterialPageRoute(
@@ -148,50 +162,7 @@ class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin
             ),                          //회색 구분 선
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             Expanded(                                  
-                child: Container(
-        padding: EdgeInsets.all(8.0),
-        child: ListView(
-          children: <Widget>[
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.882,
-              child: FutureBuilder(
-                //future: databaseHelper.getNoteList(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.data == null) {
-                    return Text('Loading');
-                  } else {
-                    if (snapshot.data.length < 1) {
-                      return Center(
-                        child: Text('No Notes, Create New one'),
-                      );
-                    }
-                    return ListView.builder(
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (BuildContext context, int i) {
-                        return Column(
-                          children: <Widget>[
-                            ListTile(
-                              title: Text(snapshot.data[i].title),
-                              onTap: () {
-                                Route route = MaterialPageRoute(
-                                    builder: (context) => EditDiet2(     //생성된 노트 누르면 editdiet2 페이지로 이동 
-                                          //note: snapshot.data[i],
-                                        ));
-                                Navigator.push(context, route);
-                              },
-                            ),
-                            Divider(color: Theme.of(context).accentColor)
-                          ],
-                        );
-                      },
-                    );
-                  }
-                },
-              ),
-            )
-          ],
-        ),
-      ),
+                child: dietBuilder(context)
     //SingleChildScrollView(     //여기서부터 스크롤 기능 시작
     //             scrollDirection: Axis.vertical,
     //             child: Column(
@@ -395,6 +366,11 @@ class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin
     );
   }
 
+  dateChange(){
+    month = WriteDietState.month_value.toString();
+    day = WriteDietState.day_value.toString();
+  }
+
   datePicker(context) {
     DatePicker.showDatePicker(context,
         theme: DatePickerTheme(
@@ -440,7 +416,7 @@ class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin
   } */
   
   send4DeleteDiet() async{   // #9 호출
-    final url = 'http://3.38.106.149/diets?diet_id=i&user_id=j';
+    final url = 'http://52.78.217.231/diets?diet_id=i&user_id=j';
     print(Uri.parse(url));
 
     print(url);
@@ -453,7 +429,7 @@ class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin
   }
 
   send4EditDiet2() async{   // #8
-    final url = 'http://3.38.106.149/diets?diet_id=i';
+    final url = 'http://52.78.217.231/diets?diet_id=i';
     print(Uri.parse(url));
 
     print(url);
@@ -466,4 +442,130 @@ class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin
     // 사진, 음식이름, 칼로리, 인분 정보 변수에 저장 후 dietedit2 화면에 출력
   }
 
+  Future<List<UserDiet>> loadDiet() async{
+    DBHelper2 sd = DBHelper2();   //dbhelper부르고
+    return await sd.diets();   //dbhelper에서 diets 부르고
+  }
+
+ Future<void> deleteDiet(String id) async{
+    DBHelper2 sd = DBHelper2();   //dbhelper부르고
+    return await sd.deleteDiet(id);   //dbhelper에서 diets 부르고
+  }
+
+  
+
+  void showAlertDialog(BuildContext context) async {
+    String result = await showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('삭제 경고'),
+          content: Text("정말 삭제하실거에요?"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('삭제'),
+              onPressed: () {
+                Navigator.pop(context, "삭제");
+                setState(() {
+                  deleteDiet(deleteId);
+                });
+                deleteId = null;
+              },
+            ),
+            FlatButton(
+              child: Text('취소'),
+              onPressed: () {
+                Navigator.pop(context, "취소");
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget dietBuilder(BuildContext parentContext){
+    return FutureBuilder(
+    builder: (context, Snap) {
+      if (Snap.data == null || Snap.data.isEmpty) {
+        return Container(child: Text("메모를 지금 바로 추가해보세요"));
+      }
+      return ListView.builder(
+        itemCount: (Snap.data as List).length,
+        itemBuilder: (context, index) {
+          UserDiet diet = (Snap.data as List)[index];
+          return InkWell(
+            onTap: (){
+              Navigator.push(
+                parentContext, CupertinoPageRoute(builder: (parentContext) => EditDiet2(id: diet.id, imageFile: diet.imageFile,))
+              );
+              print(diet.imageFile);
+              //print(File(diet.imageFile));
+            },
+            onLongPress: (){
+              print('Long Press');
+              deleteId = diet.id;
+              showAlertDialog(parentContext);
+              
+
+              },
+            child: Container(
+            margin: EdgeInsets.all(5),
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: Colors.white10,
+              border: Border.all(
+              color: Colors.brown,
+              width: 1,
+              ),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: [
+                    Text(diet.mealTime),
+                    SizedBox(width: 30),
+                    Text(diet.mealDate),
+                    SizedBox(width: 30),
+                    //Text(diet.imageFile),
+                    Text(diet.cal.toString()+ " kcal"),
+                  ],
+                ),
+                Container(                  //앨범에서 가져온 사진 띄워지는 곳
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 1.5),
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    ),
+                    margin: EdgeInsets.only(top: 20),
+                    // color: Colors.amber,
+                    width: 300,
+                    height: 300,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      
+                      child:  Image.file(
+                        
+                            
+                              File(diet.imageFile),                ///////////////////// 널 체크 문제 발생!!!!!!!!!
+                              fit: BoxFit.fill,
+                            ),
+                    ),
+                  ),
+              ],
+            ),
+          )
+
+          );
+        },
+      );
+    },
+    future: loadDiet(),
+  );
 }
+
+
+}
+
+

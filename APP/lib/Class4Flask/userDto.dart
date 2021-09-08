@@ -3,7 +3,7 @@
 class UserDto {
    String name;
    String email; 
-   late int userId;
+    int userId;
 
   UserDto(this.name, this.email);
 

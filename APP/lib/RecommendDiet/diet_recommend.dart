@@ -13,7 +13,7 @@ import 'package:timer_builder/timer_builder.dart';
 import 'package:ai_project/CheckDiet/menu_button_ui.dart';
 
 class DietRecommend extends StatefulWidget {           //#11에서 받은 정보들 출력
-  const DietRecommend({ Key? key }) : super(key: key);
+  const DietRecommend({ Key key }) : super(key: key);
 
   @override
   _DietRecommendState createState() => _DietRecommendState();
@@ -97,7 +97,7 @@ class _DietRecommendState extends State<DietRecommend> {
                   '저녁에는 이런 음식들 어떠세요?'
                   ),
                 SizedBox(
-              height: 70.0,
+              height: 20.0,
             ),
 
               ],
@@ -118,7 +118,7 @@ class _DietRecommendState extends State<DietRecommend> {
                     children: [
                       Flexible(
                         child: Text(
-                    '불고기fgagfadgadfgadg'
+                    '불고기'
                   ),
                       ),
                   SizedBox(
@@ -163,7 +163,7 @@ class _DietRecommendState extends State<DietRecommend> {
                   ),
                 ),
                 SizedBox(
-              height: 50.0,
+              height: 40.0,
             ),
 
                 Container(
@@ -177,7 +177,7 @@ class _DietRecommendState extends State<DietRecommend> {
                     children: [
                       Flexible(
                         child: Text(
-                    '탕수육ㅎㄷㅈㄹㄻㄱㅎㅇ로오논론로'
+                    '탕수육'
                   ),
                       ),
                   SizedBox(
@@ -222,7 +222,7 @@ class _DietRecommendState extends State<DietRecommend> {
                   ),
                 ),
                 SizedBox(
-              height: 50.0,
+              height: 40.0,
             ),
 
                 Container(
@@ -236,7 +236,7 @@ class _DietRecommendState extends State<DietRecommend> {
                     children: [
                       Flexible(
                         child: Text(
-                    '치킨ㅇㄹㄴㅇㄻㅎㅁㄴㅁㄹㅇㄴdsfasfsf'
+                    '치킨'
                   ),
                       ),
                   SizedBox(
