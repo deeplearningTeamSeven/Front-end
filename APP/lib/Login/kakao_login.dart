@@ -117,11 +117,11 @@ class KakaoLoginState extends State<KakaoLogin> {
       print(userJson);
 
  
-    
+   
       //post request
 
       //url to send the post request to 
-      final url = 'http://52.78.217.231/login/';
+      final url = 'http://3.35.167.225:8080/login/';
       print(Uri.parse(url));
       
       print(url);

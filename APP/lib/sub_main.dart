@@ -110,7 +110,7 @@ class _SubMain extends State<SubMain> with TickerProviderStateMixin {
 
   receive4DietRecommend() async{   //#11
     
-    final url = 'http://52.78.217.231/diet/recommend?user_id=i';
+    final url = 'http://3.35.167.225:8080/diet/recommend?user_id=i';
     print(Uri.parse(url));
 
     print(url);

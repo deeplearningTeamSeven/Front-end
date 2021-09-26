@@ -316,7 +316,7 @@ class _InputInfoState extends State<InputInfo> {
     print(userInfoJson);
     print(json.encode(userInfoJson));
 
-    final url = 'http://52.78.217.231/users/';
+    final url = 'http://3.35.167.225:8080/users/';
     print(Uri.parse(url));
 
     print(url);
@@ -347,7 +347,7 @@ class _InputInfoState extends State<InputInfo> {
   print(DietListJson);
   print(json.encode(DietListJson));
 
-  final url = 'http://52.78.217.231/diets/list';
+  final url = 'http://3.35.167.225:8080/diets/list';
   print(Uri.parse(url));
 
   print(url);

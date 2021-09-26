@@ -21,7 +21,7 @@ class _ManagementState extends State<Management> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('식단관리앱'),
+        title: Text('SixSense'),
         backgroundColor: Color(0xFF151026),
         centerTitle: true,
         elevation: 0.0, // 그림자생김
@@ -119,7 +119,7 @@ class _ManagementState extends State<Management> {
   }
 
   send4UserDelete() async{   // #3 호출
-    final url = 'http://52.78.217.231/users/account?user_id=i';
+    final url = 'http://3.35.167.225:8080/users/account?user_id=i';
     print(Uri.parse(url));
 
     print(url);

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:ai_project/CheckDiet/edit_diet.dart';
 import 'package:ai_project/MemberInfo/management.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,7 @@ import 'package:ai_project/CheckDiet/check_diet.dart';
 import 'package:ai_project/CheckDiet/image_load_button.dart';
 import 'package:ai_project/CheckDiet/edit_diet.dart';
 import 'package:http/http.dart' as http;
+
 
 // 식단 추가 작성 페이지 (인공지능에 들어가기 전 페이지)
 class WriteDiet extends StatefulWidget {
@@ -28,6 +30,10 @@ class WriteDietState extends State<WriteDiet> {
   static TextEditingController day_value = TextEditingController();     //day_value.toString() 으로 나중에 이 정보 불러오기
   File new_image; // 다시 선택하기 버튼 누를 때 불러올 이미지 변수
   static File image4checkdiet;  //식단조회 페이지로 보낼 이미지 변수   ***null로 만들수 없어서 file.txt넣어둠   
+  static String ai_image = 'https://sixsense20210819.s3.ap-northeast-2.amazonaws.com/4_2021-09-26%2006:18:00.029546';
+
+  
+  
 
   
 
@@ -48,7 +54,7 @@ class WriteDietState extends State<WriteDiet> {
       print(img_file);
       setState(() => new_image = img_file);
     } on PlatformException catch (e) {
-      print('Failed to picl image: $e');
+      print('Failed to pick image: $e');
     }
   }
 
@@ -68,7 +74,7 @@ class WriteDietState extends State<WriteDiet> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('식단관리앱'),
+        title: Text('SixSense'),
         backgroundColor: Color(0xFF151026),
         centerTitle: true,
         elevation: 0.0, // 그림자생김
@@ -192,7 +198,7 @@ class WriteDietState extends State<WriteDiet> {
                         padding: const EdgeInsets.only(right: 4, left: 8),
                         child: SizedBox(
                           width: 45,
-                          height: 35,
+                          height: 40,
                           child: TextField(
                             keyboardType: TextInputType.number,
                             controller: month_value,
@@ -216,7 +222,7 @@ class WriteDietState extends State<WriteDiet> {
                         padding: const EdgeInsets.only(right: 4, left: 8),
                         child: SizedBox(
                           width: 45,
-                          height: 35,
+                          height: 40,
                           child: TextField(
                             keyboardType: TextInputType.number,
                             controller: day_value,
@@ -291,7 +297,8 @@ class WriteDietState extends State<WriteDiet> {
                     borderRadius: BorderRadius.circular(30.0),
                     // side: BorderSide(color: Color(0xFF151026), width: 5),
                   ),
-                  onPressed: () {                                    //등록 버튼 눌렀을 때 날짜랑 식사시간 저장한 상태에서 #4번 호출 /predict로 이미지 file AI모델에 전달
+                  onPressed: () {       
+                                                 //등록 버튼 눌렀을 때 날짜랑 식사시간 저장한 상태에서 #4번 호출 /predict로 이미지 file AI모델에 전달
                     print('등록버튼 pressed');
                     //transferMealTime();
                     //pickImage2(ImageSource.gallery);
@@ -299,10 +306,11 @@ class WriteDietState extends State<WriteDiet> {
                     //print(new_image);
                     image4checkdiet= ImageLoadButtonState.image;
                     print(image4checkdiet.toString());
-                   // send4predict();  // #4
+                    send4predict();  // #4
+                   
                     /// 음식명, 이름, 칼로리 정보 변수에 저장 후 editDiet 페이지에 출력할 수 있게함
                     
-
+                    
 
                     change2EditDiet();  // editdiet 페이지로 이동
 
@@ -324,27 +332,41 @@ class WriteDietState extends State<WriteDiet> {
     );
   }
   change2EditDiet() {
+    
     Navigator.pushAndRemoveUntil(context,
       MaterialPageRoute(
           builder: (BuildContext context) => EditDiet()    
       
       ), (route) => false);
+    
   }
 
-  // send4predict() async{    // #4   이미지 파일을 어떤 형식으로 보내야지?
-  //   final url = 'http://3.38.106.149/predict/';
-  //   print(Uri.parse(url));
+  send4predict() async{    // #4   이미지 파일을 어떤 형식으로 보내야지?
+    print('send4predict');
+    Dio dio = new Dio();   //dio 객체 생성
+    final url = 'http://3.35.167.225:8080/predict';
+    print(Uri.parse(url));
+    print(widget.food_image.path);
 
-  //   print(url);
-  //   //sending a post request to the url
+    FormData formData = new FormData.fromMap({   
+      "user_id": '3',  //user_id
+      "file": await MultipartFile.fromFile(widget.food_image.path, filename: "food_image.jpg")    
+    });
 
-  //  // final response = await http.post(Uri.parse(url), body: json.encode(DietListJson), headers: {'Content-Type':'application/json'});   
-  //   print('hello2');
-  //  // print(response);
-  //   //print(response.body);
-  //   print('hello3');
+    Response response = await dio.post(url , data: formData);
+      print(response.statusCode);
+      print(response);
+      print(response.data['img_url']);
+      
+      print('hello');
+      ai_image = response.data['img_url'];
+      print(ai_image);
+   
+  }
 
-  //   ///////////////////////////////////// 여기에 서버에서 온 값들 변수에 저장해놔야함     
+
+
+  ///////////////////////////////////// 여기에 서버에서 온 값들 변수에 저장해놔야함     
   //  // Map userMap=jsonDecode(response.body);    //response를 디코딩해서 변수에 저장
   //   print(userMap);
   //   print('hello4');

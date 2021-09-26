@@ -56,7 +56,7 @@ class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('식단관리앱'),
+        title: Text('SixSense'),
         backgroundColor: Color(0xFF151026),
         centerTitle: true,
         elevation: 0.0, // 그림자생김
@@ -94,7 +94,7 @@ class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin
                           icon: const Icon(
                             Icons.date_range,
                             color: Colors.black,
-                            size: 25,
+                            size: 20,
                           ),
                           label: Text(    //날짜선택 버튼
                             _date,
@@ -129,7 +129,7 @@ class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin
                         child: const Text(
                           '조회',
                           style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 15,
                               fontFamily: 'NanumSquareRound',
                               fontWeight: FontWeight.w700),
                         ),
@@ -416,7 +416,7 @@ class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin
   } */
   
   send4DeleteDiet() async{   // #9 호출
-    final url = 'http://52.78.217.231/diets?diet_id=i&user_id=j';
+    final url = 'http://3.35.167.225:8080/diets?diet_id=i&user_id=j';
     print(Uri.parse(url));
 
     print(url);
@@ -429,7 +429,7 @@ class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin
   }
 
   send4EditDiet2() async{   // #8
-    final url = 'http://52.78.217.231/diets?diet_id=i';
+    final url = 'http://3.35.167.225:8080/diets?diet_id=i';
     print(Uri.parse(url));
 
     print(url);
@@ -489,7 +489,7 @@ class CheckDietState extends State<CheckDiet> with AutomaticKeepAliveClientMixin
     return FutureBuilder(
     builder: (context, Snap) {
       if (Snap.data == null || Snap.data.isEmpty) {
-        return Container(child: Text("메모를 지금 바로 추가해보세요"));
+        return Container(child: Text("식단을 지금 바로 추가해보세요"));
       }
       return ListView.builder(
         itemCount: (Snap.data as List).length,

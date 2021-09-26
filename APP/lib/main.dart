@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:ai_project/CheckDiet/check_diet.dart';
 import 'package:ai_project/DataBase1/db2.dart';
 import 'package:ai_project/camera_test.dart';
@@ -101,18 +102,15 @@ class _StartPageState extends State<StartPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: const Scaffold(
+  Widget build(BuildContext context) {    //////////////////////////////////시작 화면 
+    return Scaffold(
         body: Center(
-          child: Text(
-            '인공지능\n식단관리앱',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.green, fontSize: 50),
+          child: Image.asset(
+            "image/startpage.jpg",
+            fit: BoxFit.fill,
           ),
         ),
-      ),
-    );
+      );
+    
   }
 }

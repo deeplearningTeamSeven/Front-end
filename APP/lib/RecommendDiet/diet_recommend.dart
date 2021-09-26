@@ -67,7 +67,7 @@ class _DietRecommendState extends State<DietRecommend> {
 
                     ),
                     SizedBox(
-              width: 120.0,
+              width: 90.0,
             ),
                     Container(
                       margin: const EdgeInsets.all(15.0),
@@ -122,7 +122,7 @@ class _DietRecommendState extends State<DietRecommend> {
                   ),
                       ),
                   SizedBox(
-              width: 50.0,
+              width: 30.0,
             ),
                   Container(
                     child: Column(
@@ -181,13 +181,13 @@ class _DietRecommendState extends State<DietRecommend> {
                   ),
                       ),
                   SizedBox(
-              width: 50.0,
+              width: 30.0,
             ),
                   Container(
                     child: Column(
                       children: [
                         Text(
-                          '칼로리: 1000kcal'
+                          '칼로리: 1200kcal'
                         ),
                         
                       ],
@@ -236,17 +236,17 @@ class _DietRecommendState extends State<DietRecommend> {
                     children: [
                       Flexible(
                         child: Text(
-                    '치킨'
+                    '소시지'
                   ),
                       ),
                   SizedBox(
-              width: 50.0,
+              width: 30.0,
             ),
                   Container(
                     child: Column(
                       children: [
                         Text(
-                          '칼로리: 1000kcal'
+                          '칼로리: 2000kcal'
                         ),
                         
                       ],

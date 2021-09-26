@@ -39,9 +39,9 @@ class EditDietState extends State<EditDiet> {
   static const storage = FlutterSecureStorage();
 
   String mealTime = '';
-  String mealDate = '2021-09-08';
+  String mealDate = '2021-09-13';
   File imageFile;
-  int cal = 1000;
+  int cal = 3081;
 
   static String diet_id = "";
   FoodList food_list = FoodList(323,  '사과',  1);              
@@ -54,7 +54,7 @@ class EditDietState extends State<EditDiet> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('식단관리앱'),
+        title: Text('SixSense'),
         backgroundColor: Color(0xFF151026),
         centerTitle: true,
         elevation: 0.0, // 그림자생김
@@ -87,10 +87,11 @@ class EditDietState extends State<EditDiet> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
                       
-                      child:  Image.file(
+                      child:  Image.network(
+                              WriteDietState.ai_image,
                         
-                            
-                              WriteDietState.image4checkdiet,                ///////////////////// 널 체크 문제 발생!!!!!!!!!
+                              //'https://sixsense20210819.s3.ap-northeast-2.amazonaws.com/4_2021-09-26%2006:18:00.029546',
+                              //File(WriteDietState.ai_image),                ///////////////////// 널 체크 문제 발생!!!!!!!!!
                               fit: BoxFit.fill,
                             ),
                     ),
@@ -118,31 +119,31 @@ class EditDietState extends State<EditDiet> {
                       Flexible(
                         child: Text(
                     //WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
-                    '피자'
+                    '치즈피자'
                   ),
                       ),
                   SizedBox(
-              width: 50.0,
+              width: 20.0,
             ),
             Flexible(
                         child: NormalMenuButton2()
                       ),
                   SizedBox(
-              width: 50.0,
+              width: 20.0,
             ),
             
                   Container(
                     child: Column(
                       children: [
                         Text(
-                          changedCalValue + ' kcal'
+                          '2128 kcal'
                         )            /////////////////////////////////////////////
                         
                       ],
                     ),
                   ),
                   SizedBox(
-              width: 20.0,
+              width: 10.0,
             ),
                   Container(
                     child: IconButton(
@@ -160,60 +161,60 @@ class EditDietState extends State<EditDiet> {
                     
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                   padding: const EdgeInsets.all(3.0),
-                   decoration: BoxDecoration(
-                   border: Border.all(color: Colors.blueAccent)
-                   ),
+            //     Container(
+            //       margin: const EdgeInsets.all(15.0),
+            //        padding: const EdgeInsets.all(3.0),
+            //        decoration: BoxDecoration(
+            //        border: Border.all(color: Colors.blueAccent)
+            //        ),
 
-                  child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
-                    children: [
-                      Flexible(
-                        child: Text(
-                    //WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
-                    '사과주스'
-                  ),
-                      ),
-                  SizedBox(
-              width: 20.0,
-            ),
-            Flexible(
-                        child: NormalMenuButton2()
-                      ),
-                  SizedBox(
-              width: 20.0,
-            ),
+            //       child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
+            //         children: [
+            //           Flexible(
+            //             child: Text(
+            //         //WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+            //         '사과주스'
+            //       ),
+            //           ),
+            //       SizedBox(
+            //   width: 20.0,
+            // ),
+            // Flexible(
+            //             child: NormalMenuButton2()
+            //           ),
+            //       SizedBox(
+            //   width: 20.0,
+            // ),
             
-                  Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          changedCalValue + ' kcal'    //서버에서 받은 칼로리 정보 출력
-                        ),
+            //       Container(
+            //         child: Column(
+            //           children: [
+            //             Text(
+            //               changedCalValue + ' kcal'    //서버에서 받은 칼로리 정보 출력
+            //             ),
                         
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-              width: 20.0,
-            ),
-                  Container(
-                    child: IconButton(
-                      onPressed: () {
-                        print("delete diet");                       
-                      },
-                      icon: Icon(Icons.remove_circle, color: Colors.red),
+            //           ],
+            //         ),
+            //       ),
+            //       SizedBox(
+            //   width: 20.0,
+            // ),
+            //       Container(
+            //         child: IconButton(
+            //           onPressed: () {
+            //             print("delete diet");                       
+            //           },
+            //           icon: Icon(Icons.remove_circle, color: Colors.red),
                                 
-                      iconSize: 20.0,
+            //           iconSize: 20.0,
 
-                    ),
-                  ),
+            //         ),
+            //       ),
 
-                    ],
+            //         ],
                     
-                  ),
-                ),
+            //       ),
+            //     ),
                 Container(
                   margin: const EdgeInsets.all(15.0),
                    padding: const EdgeInsets.all(3.0),
@@ -243,7 +244,7 @@ class EditDietState extends State<EditDiet> {
                     child: Column(
                       children: [
                         Text(
-                          changedCalValue + ' kcal'    //서버에서 받은 칼로리 정보 출력
+                           '953 kcal'    //서버에서 받은 칼로리 정보 출력
                         ),
                         
                       ],
@@ -268,114 +269,114 @@ class EditDietState extends State<EditDiet> {
                     
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                   padding: const EdgeInsets.all(3.0),
-                   decoration: BoxDecoration(
-                   border: Border.all(color: Colors.blueAccent)
-                   ),
+            //     Container(
+            //       margin: const EdgeInsets.all(15.0),
+            //        padding: const EdgeInsets.all(3.0),
+            //        decoration: BoxDecoration(
+            //        border: Border.all(color: Colors.blueAccent)
+            //        ),
 
-                  child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
-                    children: [
-                      Flexible(
-                        child: Text(
-                    //WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
-                    '피클'
-                  ),
-                      ),
-                  SizedBox(
-              width: 50.0,
-            ),
-            Flexible(
-                        child: NormalMenuButton2()
-                      ),
-                  SizedBox(
-              width: 50.0,
-            ),
+            //       child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
+            //         children: [
+            //           Flexible(
+            //             child: Text(
+            //         //WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+            //         '오이피클'
+            //       ),
+            //           ),
+            //       SizedBox(
+            //   width: 20.0,
+            // ),
+            // Flexible(
+            //             child: NormalMenuButton2()
+            //           ),
+            //       SizedBox(
+            //   width: 20.0,
+            // ),
             
-                  Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          WriteDietState.cal.toString() + ' kcal'     //서버에서 받은 칼로리 정보 출력
-                        ),
+            //       Container(
+            //         child: Column(
+            //           children: [
+            //             Text(
+            //               WriteDietState.cal.toString() + ' kcal'     //서버에서 받은 칼로리 정보 출력
+            //             ),
                         
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-              width: 20.0,
-            ),
-                  Container(
-                    child: IconButton(
-                      onPressed: () {
-                        print("delete diet");                       
-                      },
-                      icon: Icon(Icons.remove_circle, color: Colors.red),
+            //           ],
+            //         ),
+            //       ),
+            //       SizedBox(
+            //   width: 20.0,
+            // ),
+            //       Container(
+            //         child: IconButton(
+            //           onPressed: () {
+            //             print("delete diet");                       
+            //           },
+            //           icon: Icon(Icons.remove_circle, color: Colors.red),
                                 
-                      iconSize: 20.0,
+            //           iconSize: 20.0,
 
-                    ),
-                  ),
+            //         ),
+            //       ),
 
-                    ],
+            //         ],
                     
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                   padding: const EdgeInsets.all(3.0),
-                   decoration: BoxDecoration(
-                   border: Border.all(color: Colors.blueAccent)
-                   ),
+            //       ),
+            //     ),
+            //     Container(
+            //       margin: const EdgeInsets.all(15.0),
+            //        padding: const EdgeInsets.all(3.0),
+            //        decoration: BoxDecoration(
+            //        border: Border.all(color: Colors.blueAccent)
+            //        ),
 
-                  child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
-                    children: [
-                      Flexible(
-                        child: Text(
-                    //WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
-                    '감자튀김'
-                  ),
-                      ),
-                  SizedBox(
-              width: 20.0,
-            ),
-            Flexible(
-                        child: NormalMenuButton2()
-                      ),
-                  SizedBox(
-              width: 20.0,
-            ),
+            //       child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
+            //         children: [
+            //           Flexible(
+            //             child: Text(
+            //         //WriteDietState.name        //서버에서 받은 음식 이름 정보 출력
+            //         '감자튀김'
+            //       ),
+            //           ),
+            //       SizedBox(
+            //   width: 20.0,
+            // ),
+            // Flexible(
+            //             child: NormalMenuButton2()
+            //           ),
+            //       SizedBox(
+            //   width: 20.0,
+            // ),
             
-                  Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          WriteDietState.cal.toString() + ' kcal'     //서버에서 받은 칼로리 정보 출력
-                        ),
+            //       Container(
+            //         child: Column(
+            //           children: [
+            //             Text(
+            //               WriteDietState.cal.toString() + ' kcal'     //서버에서 받은 칼로리 정보 출력
+            //             ),
                         
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-              width: 20.0,
-            ),
-                  Container(
-                    child: IconButton(
-                      onPressed: () {
-                        print("delete diet");                       
-                      },
-                      icon: Icon(Icons.remove_circle, color: Colors.red),
+            //           ],
+            //         ),
+            //       ),
+            //       SizedBox(
+            //   width: 20.0,
+            // ),
+            //       Container(
+            //         child: IconButton(
+            //           onPressed: () {
+            //             print("delete diet");                       
+            //           },
+            //           icon: Icon(Icons.remove_circle, color: Colors.red),
                                 
-                      iconSize: 20.0,
+            //           iconSize: 20.0,
 
-                    ),
-                  ),
+            //         ),
+            //       ),
 
-                    ],
+            //         ],
                     
-                  ),
-                ),
+            //       ),
+            //     ),
             ],
     //      ),
         ),
@@ -532,7 +533,7 @@ class EditDietState extends State<EditDiet> {
   print(DietListJson);
   print(json.encode(DietListJson));
 
-  final url = 'http://52.78.217.231/diets/';
+  final url = 'http://3.35.167.225:8080:8080/diets/';
   print(Uri.parse(url));
 
   print(url);
@@ -558,7 +559,7 @@ class EditDietState extends State<EditDiet> {
     var queryParams=json.encode({
       'food_name':"떡볶이"
     });
-    final url = 'http://52.78.217.231/diets/search?food_name=$queryParams';
+    final url = 'http://3.35.167.225:8080/diets/search?food_name=$queryParams';
     print(Uri.parse(url));
 
     print(url);

@@ -41,7 +41,7 @@ class EditDiet2State extends State<EditDiet2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('식단관리앱'),
+        title: Text('SixSense'),
         backgroundColor: Color(0xFF151026),
         centerTitle: true,
         elevation: 0.0, // 그림자생김
@@ -121,7 +121,7 @@ class EditDiet2State extends State<EditDiet2> {
                     child: Column(
                       children: [
                         Text(
-                          '칼로리: 100kcal'
+                          '칼로리: 297kcal'
                         ),
                         
                       ],
@@ -133,46 +133,46 @@ class EditDiet2State extends State<EditDiet2> {
                     
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                   padding: const EdgeInsets.all(3.0),
-                   decoration: BoxDecoration(
-                   border: Border.all(color: Colors.blueAccent)
-                   ),
+            //     Container(
+            //       margin: const EdgeInsets.all(15.0),
+            //        padding: const EdgeInsets.all(3.0),
+            //        decoration: BoxDecoration(
+            //        border: Border.all(color: Colors.blueAccent)
+            //        ),
 
-                  child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
-                    children: [
-                      Flexible(
-                        child: Text(
-                    '불고기'
-                  ),
-                      ),
-                  SizedBox(
-              width: 40.0,
-            ),
-            Flexible(
-                        child: NormalMenuButton2()
-                      ),
-                  SizedBox(
-              width: 20.0,
-            ),
+            //       child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
+            //         children: [
+            //           Flexible(
+            //             child: Text(
+            //         '불고기'
+            //       ),
+            //           ),
+            //       SizedBox(
+            //   width: 40.0,
+            // ),
+            // Flexible(
+            //             child: NormalMenuButton2()
+            //           ),
+            //       SizedBox(
+            //   width: 20.0,
+            // ),
             
-                  Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          '칼로리: 1000kcal'
-                        ),
+            //       Container(
+            //         child: Column(
+            //           children: [
+            //             Text(
+            //               '칼로리: 1000kcal'
+            //             ),
                         
-                      ],
-                    ),
-                  ),
+            //           ],
+            //         ),
+            //       ),
                   
 
-                    ],
+            //         ],
                     
-                  ),
-                ),
+            //       ),
+            //     ),
                 Container(
                   margin: const EdgeInsets.all(15.0),
                    padding: const EdgeInsets.all(3.0),
@@ -201,7 +201,7 @@ class EditDiet2State extends State<EditDiet2> {
                     child: Column(
                       children: [
                         Text(
-                          '칼로리: 200kcal'
+                          '칼로리: 304kcal'
                         ),
                         
                       ],
@@ -213,86 +213,86 @@ class EditDiet2State extends State<EditDiet2> {
                     
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                   padding: const EdgeInsets.all(3.0),
-                   decoration: BoxDecoration(
-                   border: Border.all(color: Colors.blueAccent)
-                   ),
+            //     Container(
+            //       margin: const EdgeInsets.all(15.0),
+            //        padding: const EdgeInsets.all(3.0),
+            //        decoration: BoxDecoration(
+            //        border: Border.all(color: Colors.blueAccent)
+            //        ),
 
-                  child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
-                    children: [
-                      Flexible(
-                        child: Text(
-                    '미역국'
-                  ),
-                      ),
-                  SizedBox(
-              width: 40.0,
-            ),
-            Flexible(
-                        child: NormalMenuButton2()
-                      ),
-                  SizedBox(
-              width: 20.0,
-            ),
+            //       child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
+            //         children: [
+            //           Flexible(
+            //             child: Text(
+            //         '미역국'
+            //       ),
+            //           ),
+            //       SizedBox(
+            //   width: 40.0,
+            // ),
+            // Flexible(
+            //             child: NormalMenuButton2()
+            //           ),
+            //       SizedBox(
+            //   width: 20.0,
+            // ),
             
-                  Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          '칼로리: 300kcal'
-                        ),
+            //       Container(
+            //         child: Column(
+            //           children: [
+            //             Text(
+            //               '칼로리: 300kcal'
+            //             ),
                         
-                      ],
-                    ),
-                  ),
+            //           ],
+            //         ),
+            //       ),
                   
 
-                    ],
+            //         ],
                     
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                   padding: const EdgeInsets.all(3.0),
-                   decoration: BoxDecoration(
-                   border: Border.all(color: Colors.blueAccent)
-                   ),
+            //       ),
+            //     ),
+            //     Container(
+            //       margin: const EdgeInsets.all(15.0),
+            //        padding: const EdgeInsets.all(3.0),
+            //        decoration: BoxDecoration(
+            //        border: Border.all(color: Colors.blueAccent)
+            //        ),
 
-                  child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
-                    children: [
-                      Flexible(
-                        child: Text(
-                    '파김치'
-                  ),
-                      ),
-                  SizedBox(
-              width: 40.0,
-            ),
-            Flexible(
-                        child: NormalMenuButton2()
-                      ),
-                  SizedBox(
-              width: 20.0,
-            ),
+            //       child: Row(               //첫번째 사진과 그 아래 영양 정보 있는 박스
+            //         children: [
+            //           Flexible(
+            //             child: Text(
+            //         '파김치'
+            //       ),
+            //           ),
+            //       SizedBox(
+            //   width: 40.0,
+            // ),
+            // Flexible(
+            //             child: NormalMenuButton2()
+            //           ),
+            //       SizedBox(
+            //   width: 20.0,
+            // ),
             
-                  Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          '칼로리: 100kcal'
-                        ),
+            //       Container(
+            //         child: Column(
+            //           children: [
+            //             Text(
+            //               '칼로리: 100kcal'
+            //             ),
                         
-                      ],
-                    ),
-                  ),
+            //           ],
+            //         ),
+            //       ),
                   
 
-                    ],
+            //         ],
                     
-                  ),
-                ),
+            //       ),
+            //     ),
             ],
     //      ),
         ),
@@ -408,7 +408,7 @@ class EditDiet2State extends State<EditDiet2> {
   }
 
   send4DietSearch() async{
-    final url = 'http://52.78.217.231/diets/search?food_name=i';
+    final url = 'http://3.35.167.225:8080/diets/search?food_name=i';
     print(Uri.parse(url));
 
     print(url);
